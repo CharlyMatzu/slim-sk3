@@ -9,7 +9,7 @@ use App\Includes\Responses;
  */
 
 
-class PersistenceException extends RequestException
+class PersistenceException extends \Exception
 {
     /**
      * PersistenceException constructor.
@@ -17,6 +17,6 @@ class PersistenceException extends RequestException
      */
     public function __construct($message)
     {
-        parent::__construct( Responses::$INTERNAL_SERVER_ERROR, $message);
+        parent::__construct( $message );
     }
 }

@@ -8,8 +8,8 @@
 
 use App\Includes\Responses;
 use App\Exceptions\RequestException;
-use App\Model\People;
-use App\persistence\PersistenceSingleton;
+use App\Model\Dummy;
+use App\Persistence\PersistenceSingleton;
 
 class RequestService
 {
@@ -30,7 +30,7 @@ class RequestService
     public function getAllPeople(){
         $res =  $this->persistence->getAll();
         if( empty( $res ) )
-            throw new RequestException( Responses::$NO_CONTENT, "There are not people" );
+            throw new RequestException( Responses::NO_CONTENT, "There are not people" );
 
         return $res;
     }
@@ -45,21 +45,20 @@ class RequestService
     public function getPeople_byName($name) {
         $res =  $this->persistence->searchPeople( $name );
         if( empty( $res ) )
-            throw new RequestException( Responses::$NOT_FOUND, "Name does not exist" );
+            throw new RequestException( Responses::NOT_FOUND, "Name does not exist" );
 
         return $res;
     }
 
     /**
-     * @param $people People
+     * @param $people Dummy
      *
      * @return array
-     * @throws RequestException if name is already exists
      */
     public function AddPeople( $people ){
         try {
-            $res = $this->getPeople_byName( $people->getName() );
-            throw new RequestException( Responses::$CONFLICT, "Name already exists" );
+            $res = $this->getPeople_byName( $people->getNames() );
+            throw new RequestException( Responses::CONFLICT, "Name already exists" );
         } catch (RequestException $e) { /*  Nothing to do */ }
 
         $res =  $this->persistence->addPeople( $people );
@@ -76,7 +75,7 @@ class RequestService
     public function deletePeople($name) {
         $res =  $this->persistence->deletePeople( $name );
         if( !$res )
-            throw new RequestException( Responses::$NOT_FOUND, "Name does not exist" );
+            throw new RequestException( Responses::NOT_FOUND, "Name does not exist" );
 
         return $res;
     }

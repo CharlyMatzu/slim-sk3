@@ -73,7 +73,7 @@ class Responses
             ->withHeader( 'Content-Type', 'application/json' )
             ->withJson(
                 [
-                    'ReturnCode' => $statusCode,
+                    'ResponseCode' => $statusCode,
                     'Message' => $message
                 ]
             );
@@ -94,7 +94,7 @@ class Responses
             ->withHeader( 'Content-Type', 'application/json' )
             ->withJson(
                 [
-                    'ReturnCode' => $statusCode,
+                    'ResponseCode' => $statusCode,
                     $json_key => $result
                 ]
             );

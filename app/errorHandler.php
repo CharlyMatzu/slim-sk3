@@ -12,7 +12,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 /**
- * CORS middleware does execute when and error occurs, is required add cors in response in error handlers
+ * CORS middleware does execute when and error occurs, is required add it into error handlers
  */
 
 $container['errorHandler'] = function($c) {
@@ -40,7 +40,7 @@ $container['notFoundHandler'] = function ($c) {
      */
     return function ($request, $response) use ($c) {
         $res = \App\Includes\Responses::setCORStoResponse($response);
-        return Responses::makeMessageResponse( $res, Responses::NOT_FOUND, "Route does Not exist" );
+        return Responses::makeMessageResponse( $res, Responses::NOT_FOUND, "Route does not exist" );
     };
 };
 

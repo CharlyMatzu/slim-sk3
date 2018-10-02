@@ -84,7 +84,7 @@ class FlatLogger
      * @param $extra array Extra information
      */
     public static function makeErrorLog($message, $extra = []){
-        self::makeLog( "Error-Logging", LOG_PATH_ERROR, Logger::ERROR, $message, $extra );
+        self::makeLog( "Error-Logging", LOG_ERROR, Logger::ERROR, $message, $extra );
     }
 
     /**
@@ -93,7 +93,7 @@ class FlatLogger
      * @param $extra array Extra information
      */
     public static function makeInfoLog($message, $extra = []){
-        self::makeLog( "Info-Logging", LOG_PATH_ACTIVITY, Logger::INFO, $message, $extra );
+        self::makeLog( "Info-Logging", LOG_ACTIVITY, Logger::INFO, $message, $extra );
     }
 
 
@@ -103,7 +103,7 @@ class FlatLogger
      * @param $extra array Extra information
      */
     public static function makeDebugLog($message, $extra = []){
-        self::makeLog( "Debug-Logging", LOG_PATH_DEBUG, Logger::DEBUG, $message, $extra );
+        self::makeLog( "Debug-Logging", LOG_DEBUG, Logger::DEBUG, $message, $extra );
     }
 
 }

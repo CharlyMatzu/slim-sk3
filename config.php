@@ -6,6 +6,7 @@
  * Time: 04:02 PM
  */
 
+error_reporting( E_ERROR | E_PARSE );
 
 define("DS", DIRECTORY_SEPARATOR);
 define('ROOT_PATH', __DIR__ );

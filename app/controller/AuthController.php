@@ -54,6 +54,6 @@ class AuthController
         if( $client === '111' && $secret === '123456' )
             return $response->withStatus( 200 )->write( Utils::$token_dummy );
 
-        return $response->withStatus( Responses::$UNAUTHORIZED )->write( "No authorized" );
+        return $response->withStatus( Responses::UNAUTHORIZED )->write( "No authorized" );
     }
 }

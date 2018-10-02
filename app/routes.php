@@ -12,7 +12,7 @@ use Slim\Http\Response;
 
 
 //--------------------------
-// ENDPOINTS
+// EXAMPLES
 //--------------------------
 
 /**
@@ -29,74 +29,8 @@ use Slim\Http\Response;
  *      array[]:
  */
 
-
-
-//--------------- BASIC ROUTES
-
-// Simple New Route Function Signature
-$app->get('/', function (Request $req,  Response $res, $args = []) {
-    return $res->withStatus(200)->write('HELLO WORLD');
-});
-
-//// get the current route
-//$app->get('/current', function (Request $req,  Response $res, $args = []) {
-//    $route = $req->getAttribute('route');
-//    return $res->withStatus(200)->write( ... );
-//});
-
-
-// using headers
-$app->get('/header', function (Request $req,  Response $res, $args = []) {
-    return $res->withStatus(200)->withHeader('Authorization', 'value')->write('HELLO WORLD USING HEADER');
-});
-
-// Redirect example
-$app->redirect('/redirect', 'https://www.mywebsite.com');
-
-// Redirect using response argument
-$app->get('/redirect/v2', function (Request $req,  Response $res, $args = []) {
-    return $res->withRedirect('http://localhost/slim-skeleton/redirect/example', 301);
-});
-
-// Redirect using response argument
-$app->get('/redirect/example', function (Request $req,  Response $res, $args = []) {
-    return $res->withStatus( 200 )->write("Redirected");
-});
-
-// Use a custom callback controller using invoke method
-$app->get('/invoke', new App\Controller\RequestController() );
-
-// Use a custom callback controller using an specific method
-// it need to be instanced on dependencies.php
-$app->get('/method', 'RequestController:methodExample');
-
-
-//--------------- USING VERBS WITH SERVICES
-
-$app->get('/people', 'RequestController:getAllPeople');
-
-$app->get('/people/{name}', 'RequestController:getPeople');
-
-// using middleware
-$app->post('/people', 'RequestController:addPeople')
-        ->add( 'RequestMiddleware:checkBodyParams' );
-
-$app->delete('/people/{name}', 'RequestController:deletePeople');
-
-/*
- * POST Request - JSON example for add people
-    {
-        "name": "Carlos Zuñiga",
-        "age": 24,
-        "email": "charly@mail.com",
-        "address": "some address"
-    }
-*/
-
-
-
-//--------------- MIDDLEWARE
-
+//-------- MIDDLEWARE
+// TODO: organize this comments
 
 //// Using a global middleware
 //// using with a function
@@ -123,11 +57,114 @@ $app->delete('/people/{name}', 'RequestController:deletePeople');
 
 
 
-//------------ GROUPS
-$app->group('/v1', function () {
-    //route 'v1'
-    $this->get('[/]', function (Request $req,  Response $res, $args = []) {
-        return $res->withStatus(200)->withJson( "This is a root of URI group" );
-    });
+
+
+//--------------- BASIC ROUTES
+
+// Simple New Route Function Signature
+$app->get('/', function (Request $req,  Response $res, $args = []) {
+    return $res
+        ->withStatus(200)
+        ->write('HELLO WORLD');
+
+}); //name for identification
+
+
+// Simple New Route Function Signature
+$app->get('/info[/]', function (Request $req,  Response $res, $args = []) {
+    //GET EXTRA INFORMATION
+    $route = $req->getAttribute('route');
+
+    return $res
+        ->withStatus(200)
+        ->withJson([
+            "name" => $route->getName(),
+            "groups" => $route->getGroups(),
+            "methods" => $route->getMethods(),
+            "arguments" => $route->getArguments()
+        ]);
+
+})->setName("info route name"); //name for identification
+
+
+// using headers
+$app->get('/headers/request', function (Request $req,  Response $res, $args = []) {
+    $headers = $req->getHeaders();
+    return $res
+        ->withStatus(200)
+        ->write( print_r($headers) );
 
 });
+
+$app->get('/headers/response', function (Request $req,  Response $res, $args = []) {
+    return $res
+        ->withStatus(200)
+        ->withHeader('Authorization', 'value')
+        ->write('Authorization header are included on Response');
+
+});
+
+// Redirect example
+$app->redirect('/redirect[/]', 'redirect/example');
+
+// Redirect using response argument
+$app->get('/redirect/v2[/]', function (Request $req,  Response $res, $args = []) {
+    return $res
+        ->withRedirect('redirect/example', 301);
+
+});
+
+// redirected response
+$app->get('/redirect/example', function (Request $req,  Response $res, $args = []) {
+    return $res
+        ->withStatus( 200 )
+        ->write("Redirected");
+
+});
+
+// Use a custom callback controller using invoke method
+$app->get('/call/invoke', new App\Controller\RequestController() );
+
+// Use a custom callback controller using an specific method
+// it need to be instanced on dependencies.php
+$app->get('/call/method', 'RequestController:methodExample');
+
+
+// using URL param
+$app->get('/hello/{name}', function( Request $request, Response $response, $args = [] ){
+    return $response
+        ->withStatus(200)
+        ->write("HELLO ". $args['name']);
+});
+
+
+
+
+// -------------------------
+// USING GROUPS AND DUMMY DATA
+// -------------------------
+
+// syntax heredoc --> http://php.net/manual/es/language.types.string.php#language.types.string.syntax.heredoc
+$welcome = <<<EOD
+Welcome to the PHP-slim-skeleton
+We'll use a CSV file with useful
+data for this example of Rest API.
+EOD;
+
+$app->group('/dummy', function () {
+
+    //Presentation
+    $this->get('[/]', function (Request $request,  Response $response, $args = []) {
+        global $welcome;
+
+        return $response
+            ->withStatus(200)
+            ->write( $welcome );
+    });
+
+    
+    
+
+});
+
+

@@ -1,16 +1,30 @@
 <?php
 
-
 require_once "config.php";
 //Autoloader for vendor and own classes
 require_once "vendor/autoload.php";
 
 
+//try {
+//    $dummy = \App\Persistence\PersistenceSingleton::getInstance();
+//    var_dump($dummy->getAll());
+//    var_dump( $dummy->searchDummy( "" ) );
+//
+//    $dum = new \App\Model\Dummy();
+//        $dum->setCity("Cd. Obregon");
+//        $dum->setCountry("Cd. Obregon");
+//        $dum->setNames("Carlos R");
+//        $dum->setCompany("Emcor");
+//    $dummy->addDummy( $dum );
+//
+//    echo $dummy->removeDummy( 5 );
+//} catch (\App\Exceptions\PersistenceException $e) {  }
+
 session_start();
 
 // Instantiate the app
 $settings = require ROOT_PATH . '/app/settings.php';
-$app = new \Slim\App($settings);
+$app = new \Slim\App( $settings );
 //$app = new \Slim\App();
 
 $container = $app->getContainer();

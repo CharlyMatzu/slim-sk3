@@ -28,8 +28,9 @@ class RequestController
      * @return Response
      */
     public function __invoke($request, $response, $params = []){
-        return $response->withStatus( 200 )
-                        ->withJson( "USING INVOKE"  );
+        return $response
+            ->withStatus( 200 )
+            ->withJson( "USING INVOKE"  );
     }
 
     /**
@@ -39,7 +40,8 @@ class RequestController
      * @return Response
      */
     public function methodExample($request, $response, $params = []){
-        return $response->withStatus( 200 )
+        return $response
+            ->withStatus( 200 )
             ->withJson( "USING SPECIFIC METHOD"  );
     }
 
@@ -52,11 +54,13 @@ class RequestController
     public function getAllPeople($request, $response, $params = []){
         try{
             $res = $this->service->getAllPeople();
-            return $response->withStatus( Responses::$OK )
-                        ->withJson( $res );
+            return $response
+                ->withStatus( Responses::OK )
+                ->withJson( $res );
         }catch (RequestException $ex){
-            return $response->withStatus( $ex->getStatusCode() )
-                        ->withJson( $ex->getMessage()  );
+            return $response
+                ->withStatus( $ex->getStatusCode() )
+                ->withJson( $ex->getMessage()  );
         }
     }
 
@@ -72,10 +76,12 @@ class RequestController
             $name = $params['name'];
             $res = $this->service->getPeople_byName( $name );
 
-            return $response->withStatus( Responses::$OK )
+            return $response
+                ->withStatus( Responses::OK )
                 ->withJson( $res );
         }catch (RequestException $ex){
-            return $response->withStatus( $ex->getStatusCode() )
+            return $response
+                ->withStatus( $ex->getStatusCode() )
                 ->withJson( $ex->getMessage()  );
         }
     }
@@ -103,7 +109,7 @@ class RequestController
             $people = $request->getAttribute( 'people');
             $res = $this->service->AddPeople( $people );
 
-            return $response->withStatus( Responses::$OK )
+            return $response->withStatus( Responses::OK )
                 ->withJson( "GetExample" );
         }catch (RequestException $ex){
             return $response->withStatus( $ex->getStatusCode() )

@@ -1,7 +1,7 @@
 <?php namespace App\Middleware;
 use App\Includes\Responses;
 use App\Includes\Utils;
-use App\Model\People;
+use App\Model\Dummy;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -28,6 +28,12 @@ class RequestMiddleware
         return $res;
     }
 
+
+    public function testMid_one($request, $response, $next){
+        $res = $next($request, $response);
+        return $res;
+    }
+
     /**
      * @param $request Request
      * @param $response Response
@@ -40,7 +46,7 @@ class RequestMiddleware
         // also can use $request->getQueryParams()['myParam']
 
         if( empty( $body ) )
-            return $response->withStatus( Responses::$BAD_REQUEST )->write( "Missing params" );
+            return $response->withStatus( Responses::BAD_REQUEST )->write( "Missing params" );
 
         $name = $body['name'];
         $email = $body['email'];
@@ -49,9 +55,9 @@ class RequestMiddleware
         $address = $body['address'];
 
         if( empty( $name ) || empty( $email ) || empty( $date ) || empty( $age ) || empty( $address ) )
-            return $response->withStatus( Responses::$BAD_REQUEST )->write( "Empty params" );
+            return $response->withStatus( Responses::BAD_REQUEST )->write( "Empty params" );
 
-        $people = new People( $name, $date, $age, $email, $address );
+        $people = new Dummy( $name, $date, $age, $email, $address );
 
         // sharing a object in the app with request
         $request = $request->withAttribute( 'people', $people);
@@ -71,10 +77,10 @@ class RequestMiddleware
 //    public function authHeader($request, $response, $next){
 //        $header = $request->getHeader('Authorization');
 //        if( empty($header) )
-//            return $response->withStatus( Responses::$UNAUTHORIZED )->write("Missing Authorization header" );
+//            return $response->withStatus( Responses::UNAUTHORIZED )->write("Missing Authorization header" );
 //
 //        if( $header[0] !== Utils::$token_dummy )
-//            return $response->withStatus( Responses::$UNAUTHORIZED )->write("Access Denied, Invalid Access Token (Test)" );
+//            return $response->withStatus( Responses::UNAUTHORIZED )->write("Access Denied, Invalid Access Token (Test)" );
 //
 //        $res = $next($request, $response);
 //        return $res;

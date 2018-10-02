@@ -41,7 +41,8 @@ in the App directory there are some php files used by slim framework setup:
 * __routes:__ API Endpoints
 * __errorHandle:__ Custom responses for error handling.
 * __setting:__ Extra configuration of the framework, see: https://www.slimframework.com/docs/v3/objects/application.html#application-configuration
-* __autoload:__ optional autoloader for classess (currently composer autoloader is working in this project, see: __composer.json__, autoload section)
+* __autoload:__ optional autoloader for classes (currently composer autoloader is working in this project, see: __composer.json__, autoload section): __require_once "vendor/autoload.php"__ is used to include
+
 
 
 ### TODO

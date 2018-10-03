@@ -9,25 +9,25 @@
 use App\Includes\Responses;
 use App\Exceptions\RequestException;
 use App\Model\Dummy;
-use App\Persistence\PersistenceSingleton;
+use App\Persistence\DummySingleton;
 
 class RequestService
 {
 
     /**
-     * @var \App\Persistence\PersistenceSingleton
+     * @var \App\Persistence\DummySingleton
      */
     private $persistence;
 
     public function __construct(){
-        $this->persistence = PersistenceSingleton::getInstance();
+        $this->persistence = DummySingleton::getInstance();
     }
 
     /**
      * @return array
      * @throws RequestException
      */
-    public function getAllPeople(){
+    public function getDummies(){
         $res =  $this->persistence->getAll();
         if( empty( $res ) )
             throw new RequestException( Responses::NO_CONTENT, "There are not people" );

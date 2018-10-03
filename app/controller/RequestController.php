@@ -45,18 +45,23 @@ class RequestController
             ->withJson( "USING SPECIFIC METHOD"  );
     }
 
+    //------------------------
+    // DUMMY
+    //------------------------
+
     /**
      * @param $request Request
      * @param $response Response
      * @param $params array
      * @return Response
      */
-    public function getAllPeople($request, $response, $params = []){
+    public function getDummies($request, $response, $params = []){
         try{
-            $res = $this->service->getAllPeople();
+            $res = $this->service->getDummies();
             return $response
                 ->withStatus( Responses::OK )
                 ->withJson( $res );
+
         }catch (RequestException $ex){
             return $response
                 ->withStatus( $ex->getStatusCode() )
@@ -65,56 +70,5 @@ class RequestController
     }
 
 
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function getPeople($request, $response, $params = []){
-        try{
-            $name = $params['name'];
-            $res = $this->service->getPeople_byName( $name );
-
-            return $response
-                ->withStatus( Responses::OK )
-                ->withJson( $res );
-        }catch (RequestException $ex){
-            return $response
-                ->withStatus( $ex->getStatusCode() )
-                ->withJson( $ex->getMessage()  );
-        }
-    }
-
-
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function addPeople($request, $response, $params = []){
-        try{
-            $body = $request->getParsedBody();
-
-            // getting body params
-//            $name = $body['name'];
-//            $email = $body['email'];
-//            $date = $body['date'];
-//            $age = $body['age'];
-//            $address = $body['address'];
-
-
-            // getting people object after middleware review
-            $people = $request->getAttribute( 'people');
-            $res = $this->service->AddPeople( $people );
-
-            return $response->withStatus( Responses::OK )
-                ->withJson( "GetExample" );
-        }catch (RequestException $ex){
-            return $response->withStatus( $ex->getStatusCode() )
-                ->withJson( $ex->getMessage()  );
-        }
-    }
 
 }

@@ -162,7 +162,9 @@ $app->group('/dummy', function () {
             ->write( $welcome );
     });
 
-    
+
+    //-----------------------ENDPOINTS
+
     
 
 });

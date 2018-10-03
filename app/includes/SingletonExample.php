@@ -9,17 +9,17 @@
 namespace App\Includes;
 
 
-abstract class Singleton
+abstract class SingletonExample
 {
 
     private static $instance;
 
     private function __construct() { }
 
-    // Singleton instance
+    // SingletonExample instance
 
     /**
-     * @return Singleton
+     * @return SingletonExample
      */
     public static function getInstance()
     {

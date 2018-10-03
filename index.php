@@ -5,20 +5,23 @@ require_once "config.php";
 require_once "vendor/autoload.php";
 
 
-//try {
-//    $dummy = \App\Persistence\PersistenceSingleton::getInstance();
-//    var_dump($dummy->getAll());
-//    var_dump( $dummy->searchDummy( "" ) );
-//
+try {
+    $obj = \App\Persistence\DummySingleton::getInstance();
+//    var_dump( $obj->getAll() );
+    var_dump( $obj->searchDummy( "zz" ) );
+
 //    $dum = new \App\Model\Dummy();
 //        $dum->setCity("Cd. Obregon");
 //        $dum->setCountry("Cd. Obregon");
 //        $dum->setNames("Carlos R");
 //        $dum->setCompany("Emcor");
-//    $dummy->addDummy( $dum );
 //
-//    echo $dummy->removeDummy( 5 );
-//} catch (\App\Exceptions\PersistenceException $e) {  }
+//    $obj->addDummy( $dum );
+//
+//    echo $obj->removeDummy( 5 );
+} catch (\App\Exceptions\RequestException $e) {  }
+
+exit;
 
 session_start();
 

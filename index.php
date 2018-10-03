@@ -8,7 +8,8 @@ require_once "vendor/autoload.php";
 try {
     $obj = \App\Persistence\DummySingleton::getInstance();
 //    var_dump( $obj->getAll() );
-    var_dump( $obj->searchDummy( "zz" ) );
+//    var_dump( $obj->searchDummy( "zz" ) );
+    $obj->removeDummy_ById( 97 );
 
 //    $dum = new \App\Model\Dummy();
 //        $dum->setCity("Cd. Obregon");

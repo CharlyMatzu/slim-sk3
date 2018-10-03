@@ -81,7 +81,7 @@ class DummySingleton
 
             $dataToWrite = "";
             foreach ( $data as $item )
-                $dataToWrite .= implode(",", $item) . PHP_EOL;
+                $dataToWrite .= implode(",", $item) . PHP_EOL; // FIXME cuidar las comas dentro de comillas
 
             //concat header with data
             $str = $header . PHP_EOL . $dataToWrite;
@@ -124,7 +124,7 @@ class DummySingleton
 
         $content = [];
         foreach( $data as $dummy ){
-            $str = implode(",", $dummy);
+            $str = implode(",", $dummy); // FIXME cuidar las comas dentro de comillas
             if( stripos( $str, $search ) !== false )
                 $content[] = $dummy;
         }
@@ -145,12 +145,11 @@ class DummySingleton
         $data = $this->getAll();
 
         $content = $data;
-        $go = true;
         $index = 0;
-        while( $go ){
-            if( $content[$index][0] === $id ) {
-                unset($content[$index][0]);
-                $go = false;
+        foreach ( $content as $item ){
+            if( $index === $id ) {
+                unset( $content[$index] );
+                break;
             }
             $index++;
         }

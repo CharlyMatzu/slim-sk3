@@ -4,26 +4,6 @@ require_once "config.php";
 //Autoloader for vendor and own classes
 require_once "vendor/autoload.php";
 
-
-try {
-    $obj = \App\Persistence\DummySingleton::getInstance();
-//    var_dump( $obj->getAll() );
-//    var_dump( $obj->searchDummy( "zz" ) );
-    $obj->removeDummy_ById( 97 );
-
-//    $dum = new \App\Model\Dummy();
-//        $dum->setCity("Cd. Obregon");
-//        $dum->setCountry("Cd. Obregon");
-//        $dum->setNames("Carlos R");
-//        $dum->setCompany("Emcor");
-//
-//    $obj->addDummy( $dum );
-//
-//    echo $obj->removeDummy( 5 );
-} catch (\App\Exceptions\RequestException $e) {  }
-
-exit;
-
 session_start();
 
 // Instantiate the app

@@ -4,6 +4,7 @@ use App\Exceptions\PersistenceException;
 use App\Exceptions\RequestException;
 use App\Includes\Responses;
 use App\Includes\SingletonExample;
+use App\Model\Dummy;
 use App\Model\People;
 
 class DummySingleton
@@ -12,6 +13,8 @@ class DummySingleton
 
     const READ_ONLY_TOP     = "r";
     const READ_WRITE_TOP    = "r+";
+    const WRITE_ONLY_ZERO   = "w";
+    const READ_WRITE_ZERO   = "w+";
     const READ_ONLY_BOTTOM  = "a";
     const READ_WRITE_BOTTOM = "a+";
 
@@ -66,6 +69,19 @@ class DummySingleton
         }
     }
 
+    private function concatToWrite( $dummy ){
+        $str = $dummy[0] .",".
+            $dummy[1] .",".
+            $dummy[2] .",".
+            $dummy[3] .",".
+            $dummy[4] .",".
+            $dummy[5] .",".
+            $dummy[6] .",".
+            $dummy[7] .",".
+            "\"". $dummy[8] ."\"" . PHP_EOL; // adding slash quotes to join coordinates as a same word and ignore comma separator
+        return $str;
+    }
+
 
     /**
      * write on file
@@ -75,18 +91,21 @@ class DummySingleton
      */
     private function writeOnCSV( $data ){
         try{
-            $handle = fopen(ROOT_PATH . DS . "media" . DS . "dummy.csv", self::READ_WRITE_TOP);
-            //get header for CSV
+            $handle = fopen(ROOT_PATH . DS . "media" . DS . "dummy.csv", self::READ_ONLY_TOP);
+            // getting header for CSV (first line)
             $header = fgets($handle);
+            fclose($handle);
 
             $dataToWrite = "";
             foreach ( $data as $item )
-                $dataToWrite .= implode(",", $item) . PHP_EOL; // FIXME cuidar las comas dentro de comillas
+                $dataToWrite .= $this->concatToWrite( $item );
 
             //concat header with data
-            $str = $header . PHP_EOL . $dataToWrite;
+            $handle = fopen(ROOT_PATH . DS . "media" . DS . "dummy.csv", self::WRITE_ONLY_ZERO); //Remove all content
+            $str = $header . $dataToWrite;
             fwrite($handle, $str);
             fclose($handle);
+
         }catch (\Exception $ex){
             throw new PersistenceException($ex->getMessage());
         }
@@ -97,18 +116,13 @@ class DummySingleton
      * Get all dummies on the CSV
      *
      * @return array|false|null
-     * @throws RequestException
+     * @throws PersistenceException
      */
     public function getAll(  ){
-        try {
-            $data = $this->readCSV(self::READ_ONLY_TOP);
-        } catch (PersistenceException $e) {
-            throw new RequestException( Responses::INTERNAL_SERVER_ERROR, $e->getMessage() );
-        }
-
-
+        $data = $this->readCSV(self::READ_ONLY_TOP);
+        // if data is empty
         if( empty($data) )
-            throw new RequestException( Responses::NO_CONTENT, "There are not dummy data" );
+            return null;
 
         return $data;
     }
@@ -116,54 +130,88 @@ class DummySingleton
 
     /**
      * @param $search
-     * @return array|false|null
-     * @throws RequestException
+     * @return array|null
+     * @throws PersistenceException
      */
     public function searchDummy($search){
-        $data = $this->getAll();
+        $data = $this->readCSV( self::READ_ONLY_TOP );
 
         $content = [];
         foreach( $data as $dummy ){
-            $str = implode(",", $dummy); // FIXME cuidar las comas dentro de comillas
+            $str = implode( ",", $dummy); // all values in the same string
             if( stripos( $str, $search ) !== false )
                 $content[] = $dummy;
         }
 
         if( empty($content) )
-            throw new RequestException( Responses::NO_CONTENT, "Not data found" );
+            return null;
 
         return $content;
     }
 
 
     /**
-     * @param $id
-     * @return void
-     * @throws RequestException
+     * @param $dummy Dummy
+     * @return bool TRUE if success
+     * @throws PersistenceException
      */
-    public function removeDummy_ById($id){
+    public function addDummy( $dummy ){
+        $data = $this->getAll();
+        $new_id = 1;
+        $last = 0;
+
+        if( !empty($data) ) {
+            $last = count($data);
+            $new_id = (int) $data[ $last -1 ][0] + 1;
+        }
+        // add id for new dummy
+        $dummy->setId( $new_id );
+
+        $data[ $last ] = [
+            $dummy->getId(),
+            $dummy->getNames(),
+            $dummy->getEmail(),
+            $dummy->getCompany(),
+            $dummy->getAddress(),
+            $dummy->getCity(),
+            $dummy->getZip(),
+            $dummy->getCountry(),
+            $dummy->getCoordinates()
+        ];
+        //write data
+        $this->writeOnCSV($data);
+        return true;
+
+    }
+
+
+    /**
+     * @param $id int dummy's id
+     * @return bool TRUE success, FALSE if element was no removed or not found
+     * @throws PersistenceException
+     */
+    public function removeDummy_ById( $id ){
         $data = $this->getAll();
 
         $content = $data;
         $index = 0;
         foreach ( $content as $item ){
-            if( $index === $id ) {
+            if( $item[0] === "".$id ) {
                 unset( $content[$index] );
                 break;
             }
             $index++;
         }
 
-        //compare
+        // compare original with new
         if( count($data) == count($content) )
-            throw new RequestException( Responses::NOT_FOUND, "ID does not exist" );
+            return false;
 
-        //write
-        try {
-            $this->writeOnCSV($content);
-        } catch (PersistenceException $e) {
-            throw new RequestException( Responses::INTERNAL_SERVER_ERROR, $e->getMessage() );
-        }
+        //write data
+        $this->writeOnCSV($content);
+        return true;
     }
+
+
 
 }

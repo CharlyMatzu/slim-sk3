@@ -6,10 +6,12 @@
  * Time: 04:26 PM
  */
 
+use App\Exceptions\PersistenceException;
 use App\Includes\Responses;
 use App\Exceptions\RequestException;
 use App\Model\Dummy;
 use App\Persistence\DummySingleton;
+
 
 class RequestService
 {
@@ -28,56 +30,62 @@ class RequestService
      * @throws RequestException
      */
     public function getDummies(){
-        $res =  $this->persistence->getAll();
-        if( empty( $res ) )
-            throw new RequestException( Responses::NO_CONTENT, "There are not people" );
+        try{
+            $res = $this->persistence->getAll();
+            if( empty( $res ) )
+                throw new RequestException( Responses::NO_CONTENT, "There are not people" );
 
-        return $res;
+            return $res;
+        } catch (PersistenceException $e) {
+            throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
     }
 
 
     /**
-     * @param $name String people name
-     *
+     * @param $search
      * @return array|bool
      * @throws RequestException
      */
-    public function getPeople_byName($name) {
-        $res =  $this->persistence->searchPeople( $name );
-        if( empty( $res ) )
-            throw new RequestException( Responses::NOT_FOUND, "Name does not exist" );
+    public function getDummy_BySearch( $search ) {
+        try{
+            $res =  $this->persistence->searchDummy( $search );
+            if( empty( $res ) )
+                throw new RequestException( Responses::NO_CONTENT, "Dummies" );
 
-        return $res;
+            return $res;
+        } catch (PersistenceException $e) {
+            throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
     }
 
     /**
      * @param $people Dummy
      *
-     * @return array
+     * @return bool
+     * @throws RequestException
      */
     public function AddPeople( $people ){
-        try {
-            $res = $this->getPeople_byName( $people->getNames() );
-            throw new RequestException( Responses::CONFLICT, "Name already exists" );
-        } catch (RequestException $e) { /*  Nothing to do */ }
-
-        $res =  $this->persistence->addPeople( $people );
-        return $res;
+        try{
+            return $this->persistence->addDummy( $people->getNames() );
+        } catch (PersistenceException $e) {
+            throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
     }
 
 
     /**
-     * @param $name String people name
+     * @param $id String people name
      *
-     * @return array|bool
+     * @return bool
      * @throws RequestException
      */
-    public function deletePeople($name) {
-        $res =  $this->persistence->deletePeople( $name );
-        if( !$res )
-            throw new RequestException( Responses::NOT_FOUND, "Name does not exist" );
-
-        return $res;
+    public function removeDummy($id ) {
+        try{
+            return $this->persistence->removeDummy_ById( $id );
+        } catch (PersistenceException $e) {
+            throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
+        }
     }
 
 

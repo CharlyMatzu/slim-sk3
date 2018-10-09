@@ -13,10 +13,13 @@ class Dummy
 {
 
 
+    private $id;
     private $names;
     private $email;
     private $company;
+    private $address;
     private $city;
+    private $zip;
     private $country;
     private $coordinates;
 
@@ -24,8 +27,29 @@ class Dummy
      * Dummy constructor.
      */
     public function __construct() {
-        $this->coordinates = "-88.18757, -78.7753";
         $this->email = "dummy@mail.com";
+        $this->company = "Dummy INC";
+        $this->address = "address";
+        $this->city = "city";
+        $this->zip = "zip";
+        $this->country = "country";
+        $this->coordinates = "-88.18757, -78.7753";
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -45,11 +69,19 @@ class Dummy
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getEmail()
     {
         return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
     }
 
     /**
@@ -71,6 +103,22 @@ class Dummy
     /**
      * @return mixed
      */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCity()
     {
         return $this->city;
@@ -82,6 +130,22 @@ class Dummy
     public function setCity($city)
     {
         $this->city = $city;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
+
+    /**
+     * @param mixed $zip
+     */
+    public function setZip($zip)
+    {
+        $this->zip = $zip;
     }
 
     /**
@@ -101,12 +165,22 @@ class Dummy
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCoordinates()
     {
         return $this->coordinates;
     }
+
+    /**
+     * @param string $coordinates
+     */
+    public function setCoordinates($coordinates)
+    {
+        $this->coordinates = $coordinates;
+    }
+
+
 
 
 

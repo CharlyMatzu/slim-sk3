@@ -144,7 +144,7 @@ $app->get('/hello/{name}', function( Request $request, Response $response, $args
 // USING GROUPS AND DUMMY DATA
 // -------------------------
 
-// syntax heredoc --> http://php.net/manual/es/language.types.string.php#language.types.string.syntax.heredoc
+// heredoc syntax  -->  http://php.net/manual/es/language.types.string.php#language.types.string.syntax.heredoc
 $welcome = <<<EOD
 Welcome to the PHP-slim-skeleton
 We'll use a CSV file with useful
@@ -152,19 +152,9 @@ data for this example of Rest API.
 EOD;
 
 $app->group('/dummy', function () {
-
-    //Presentation
-    $this->get('[/]', function (Request $request,  Response $response, $args = []) {
-        global $welcome;
-
-        return $response
-            ->withStatus(200)
-            ->write( $welcome );
-    });
-
-
+    
     //-----------------------ENDPOINTS
-
+    $this->get('[/]', 'RequestController:');
     
 
 });

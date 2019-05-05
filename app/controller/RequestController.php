@@ -1,7 +1,7 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Includes\Responses;
+use App\Utils\Responses;
 use App\Model\User;
 use App\Service\RequestService;
 use Slim\Http\Request;

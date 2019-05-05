@@ -8,9 +8,12 @@
 
 error_reporting( E_ERROR | E_PARSE );
 
+//define('PROTOCOL',      'https://');
+//define('SERVER_URI',    PROTOCOL . $SERVER . ROOT_HOST);
+
 define("DS", DIRECTORY_SEPARATOR);
 define('ROOT_PATH', __DIR__ );
-define("VENDOR_PATH",  ROOT_PATH . DS . "vendor");
+define("VENDOR_PATH",  ROOT_PATH . DS . "libs");
 define("APP_PATH",  ROOT_PATH . DS . "app");
 define("INCLUDES_PATH", APP_PATH . DS . "includes");
 

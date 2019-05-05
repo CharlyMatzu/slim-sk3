@@ -1,6 +1,6 @@
 <?php namespace App\Middleware;
-use App\Includes\Responses;
-use App\Includes\Utils;
+use App\Utils\Responses;
+use App\Utils\Utils;
 use App\Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;

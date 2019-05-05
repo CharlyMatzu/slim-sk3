@@ -1,5 +1,5 @@
 <?php namespace App\Exceptions;
-use App\Includes\Responses;
+use App\Utils\Responses;
 
 /**
  * Created by PhpStorm.

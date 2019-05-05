@@ -7,29 +7,20 @@
  */
 
 use App\Exceptions\PersistenceException;
-use App\Includes\Responses;
+use App\Utils\Responses;
 use App\Exceptions\RequestException;
 use App\Model\User;
-use App\Persistence\DummySingleton;
 
 
 class RequestService
 {
 
     /**
-     * @var \App\Persistence\DummySingleton
-     */
-    private $persistence;
-
-    public function __construct(){
-        $this->persistence = DummySingleton::getInstance();
-    }
-
-    /**
-     * @return array
+     * @param $user User
+     * @return mixed
      * @throws RequestException
      */
-    public function getDummies(){
+    public function testService($user){
         try{
             $res = $this->persistence->getAll();
             if( empty( $res ) )
@@ -40,53 +31,5 @@ class RequestService
             throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
         }
     }
-
-
-    /**
-     * @param $search
-     * @return array|bool
-     * @throws RequestException
-     */
-    public function getDummy_BySearch( $search ) {
-        try{
-            $res =  $this->persistence->searchDummy( $search );
-            if( empty( $res ) )
-                throw new RequestException( Responses::NO_CONTENT, "Dummies" );
-
-            return $res;
-        } catch (PersistenceException $e) {
-            throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
-        }
-    }
-
-    /**
-     * @param $people User
-     *
-     * @return bool
-     * @throws RequestException
-     */
-    public function AddPeople( $people ){
-        try{
-            return $this->persistence->addDummy( $people->getNames() );
-        } catch (PersistenceException $e) {
-            throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
-        }
-    }
-
-
-    /**
-     * @param $id String people name
-     *
-     * @return bool
-     * @throws RequestException
-     */
-    public function removeDummy($id ) {
-        try{
-            return $this->persistence->removeDummy_ById( $id );
-        } catch (PersistenceException $e) {
-            throw new RequestException(Responses::INTERNAL_SERVER_ERROR, $e->getMessage());
-        }
-    }
-
 
 }

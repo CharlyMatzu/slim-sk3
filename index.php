@@ -1,6 +1,7 @@
 <?php
 
 require_once "config.php";
+
 //Autoloader for libs and own classes
 require_once "vendor/autoload.php";
 
@@ -18,9 +19,6 @@ require ROOT_PATH . '/app/includes/dependencies.php';
 
 // Register middleware
 require ROOT_PATH . '/app/includes/middleware.php';
-
-// Register Twig render
-require_once ROOT_PATH . '/app/includes/render.php';
 
 // Error Handler
 require ROOT_PATH . '/app/includes/errorHandler.php';

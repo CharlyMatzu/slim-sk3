@@ -2,9 +2,13 @@
 
 {% block content %}
     <div class="card card-login mx-auto mt-3">
-        <div class="card-header">TEST</div>
+        <div class="card-header text-white bg-primary">TEST</div>
         <div class="card-body">
-            Hello world from view
+            <ul>
+                {% for item in NAMES %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </div>
 {% endblock %}

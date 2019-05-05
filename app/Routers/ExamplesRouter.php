@@ -3,40 +3,41 @@
 use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Slim\Http\UploadedFile;
 
 // using map for multiple methods
-$app->map(['GET', 'POST'], '/', function (Request $req,  Response $res, $params = []) {
-    return $res
+$app->map(['GET', 'POST'], '/', function (Request $request,  Response $response, $params = []) {
+    return $response
         ->withStatus(200)
         ->write('HELLO WORLD USING MAP ROUTE EXAMPLE');
 });
 
 // Simple New Route Function Signature
-$app->get('/get', function (Request $req,  Response $res, $params = []) {
-    return $res->write('GET EXAMPLE');
+$app->get('/get', function (Request $request,  Response $response, $params = []) {
+    return $response->write('GET EXAMPLE');
 });
 
-$app->post('/post', function (Request $req,  Response $res, $params = []) {
-    return $res->write('POST EXAMPLE');
+$app->post('/post', function (Request $request,  Response $response, $params = []) {
+    return $response->write('POST EXAMPLE');
 });
 
-$app->put('/put', function (Request $req,  Response $res, $params = []) {
-    return $res->write('PUT EXAMPLE');
+$app->put('/put', function (Request $request,  Response $response, $params = []) {
+    return $response->write('PUT EXAMPLE');
 });
 
-$app->any('/any', function (Request $req,  Response $res, $params = []) {
-    return $res
+$app->any('/any', function (Request $request,  Response $response, $params = []) {
+    return $response
         ->withStatus(200)
         ->write('ANY EXAMPLE FOR ALL METHODS');
 });
 
 
 // Simple New Route Function Signature
-$app->get('/info[/]', function (Request $req,  Response $res, $params = []) {
+$app->get('/info[/]', function (Request $request,  Response $response, $params = []) {
     //GET EXTRA INFORMATION
-    $route = $req->getAttribute('route');
+    $route = $request->getAttribute('route');
 
-    return $res
+    return $response
         ->withStatus(200)
         ->withJson([
             "name" => $route->getName(),
@@ -55,16 +56,16 @@ $app->get('/hello/{name}', function( Request $request, Response $response, $para
 });
 
 // using headers
-$app->get('/headers/request', function (Request $req,  Response $res, $params = []) {
-    $headers = $req->getHeaders();
-    return $res
+$app->get('/headers/request', function (Request $request,  Response $response, $params = []) {
+    $headers = $request->getHeaders();
+    return $response
         ->withStatus(200)
         ->write( print_r($headers) );
 
 });
 
-$app->get('/headers/response', function (Request $req,  Response $res, $params = []) {
-    return $res
+$app->get('/headers/response', function (Request $request,  Response $response, $params = []) {
+    return $response
         ->withStatus(200)
         ->withHeader('Authorization', 'value')
         ->write('Authorization header are included on Response');
@@ -75,15 +76,15 @@ $app->get('/headers/response', function (Request $req,  Response $res, $params =
 $app->redirect('/redirect[/]', 'redirect/example');
 
 // Redirect using response argument
-$app->get('/redirect/v2[/]', function (Request $req,  Response $res, $params = []) {
-    return $res
+$app->get('/redirect/v2[/]', function (Request $request,  Response $response, $params = []) {
+    return $response
         ->withRedirect('redirect/example', 301);
 
 });
 
 // redirected response
-$app->get('/redirect/example', function (Request $req,  Response $res, $params = []) {
-    return $res
+$app->get('/redirect/example', function (Request $request,  Response $response, $params = []) {
+    return $response
         ->withStatus( 200 )
         ->write("Redirected");
 
@@ -104,8 +105,8 @@ $app->get('/call/method', 'RequestController:methodExample');
 //------------ Middleware examples
 // See more: http://www.slimframework.com/docs/v3/concepts/middleware.html
 
-$app->get('/midd', function (Request $req,  Response $res, $params = []) {
-    return $res->write("MIDDLEWARE");
+$app->get('/midd', function (Request $request, Response $response, $params = []) {
+    return $response->write("MIDDLEWARE");
 })->add('RequestMiddleware:testMiddleware');
 
 
@@ -116,9 +117,9 @@ $app->get('/midd/real', 'RequestController:checkExample')
 
 // ----------- USING TWIG RENDER
 
-$app->any('/view', function (Request $req,  Response $res, $params = []) {
+$app->any('/view', function (Request $request,  Response $response, $params = []) {
     return $this->view
-        ->render($res, 'home.twig', [
+        ->render($response, 'home.twig', [
             'TITLE' => 'TEST',
             'NAMES' => ['Carlos', 'Roberto', 'Zuniga', 'Martinez']
         ]);
@@ -130,7 +131,41 @@ $app->any('/view', function (Request $req,  Response $res, $params = []) {
 
 $app->group('/group', function (App $app) {
 
-    $app->any('/test', function (Request $req,  Response $res, $params = []) {
-        return $res->write("using groups");
+    $app->any('/test', function (Request $request,  Response $response, $params = []) {
+        return $response->write("using groups");
     });
 });
+
+
+
+// ----------- FILE UPLOAD
+// NOTE: required multipart/form-data
+$app->post('/file', function(Request $request,  Response $response, $params = []){
+    //$directory = $this->get('upload_directory'); // settings.php
+    $directory = ROOT_PATH . DS . 'public' . DS . 'uploads';
+    if (!file_exists($directory)) mkdir( $directory, 0777, true);
+
+    /** @var $uploadedFiles UploadedFile*/
+    $uploadedFiles = $request->getUploadedFiles();
+    /** @var $file UploadedFile*/
+    $file = $uploadedFiles['some_image'];
+
+    if ($file->getError() === UPLOAD_ERR_OK){
+        $filename = moveUploadedFile($directory, $file);
+        return $response->write($filename);
+    }
+
+    return $response->write("An error has ocurred");
+});
+
+
+function moveUploadedFile($directory, UploadedFile $uploadedFile)
+{
+    $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+    $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
+    $filename = sprintf('%s.%0.8s', $basename, $extension);
+
+    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+    return $filename;
+}

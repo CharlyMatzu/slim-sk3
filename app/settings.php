@@ -1,11 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Carlos R. Zuñiga
- * Date: 27/08/2018
- * Time: 09:27 AM
- */
 
+// ----- EXTRA DATA
+
+$container['upload_directory'] = ROOT_PATH . '/public/uploads';
+
+// ----- SLIM FRAMEWORK SETTINGS
 return [
     'settings' => [
         'displayErrorDetails' => true, //FALSE for Production

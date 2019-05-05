@@ -1,7 +1,7 @@
 <?php namespace App\Middleware;
 use App\Utils\Responses;
 use App\Utils\Utils;
-use App\Model\User;
+use App\Entities\UserEntity;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -55,7 +55,7 @@ class RequestMiddleware
         if( empty( $name ) || empty( $email ))
             return $response->withStatus( Responses::BAD_REQUEST )->write( "Empty params" );
 
-        $user = new User( $name, $email);
+        $user = new UserEntity( $name, $email);
 
         // sharing a object in the app with request
         $request = $request->withAttribute( 'user', $user);

@@ -4,7 +4,6 @@ use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-
 // using map for multiple methods
 $app->map(['GET', 'POST'], '/', function (Request $req,  Response $res, $params = []) {
     return $res
@@ -112,19 +111,14 @@ $app->get('/midd', function (Request $req,  Response $res, $params = []) {
 
 $app->get('/midd/real', 'RequestController:checkExample')
     ->add('RequestMiddleware:checkBodyParams');
-/*
-    {
-        "name": "someone",
-        "email": "someone@mail.com"
-    }
-*/
+// { "name": "someone", "email": "someone@mail.com" }
 
 
 // ----------- USING TWIG RENDER
 
 $app->any('/view', function (Request $req,  Response $res, $params = []) {
     return $this->view
-        ->render($this->response, 'home.twig', [
+        ->render($res, 'home.twig', [
             'TITLE' => 'TEST',
             'NAMES' => ['Carlos', 'Roberto', 'Zuniga', 'Martinez']
         ]);
@@ -140,20 +134,3 @@ $app->group('/group', function (App $app) {
         return $res->write("using groups");
     });
 });
-
-
-// ----------- USING DATABASE
-
-// heredoc syntax  -->  http://php.net/manual/es/language.types.string.php#language.types.string.syntax.heredoc
-$welcome = <<<EOD
-Welcome to the PHP-slim-skeleton
-We'll use a CSV file with useful
-data for this example of Rest API.
-EOD;
-
-$app->group('/dummy', function () {
-    //-----------------------ENDPOINTS
-    $this->get('[/]', 'RequestController:');
-});
-
-

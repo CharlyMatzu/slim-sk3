@@ -2,7 +2,7 @@
 
 use App\Exceptions\RequestException;
 use App\Utils\Responses;
-use App\Model\User;
+use App\Entities\UserEntity;
 use App\Service\RequestService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -58,7 +58,7 @@ class RequestController
      * @return Response
      */
     public function checkExample(Request $request,  Response $response, $params = []){
-        /**@var $user User*/
+        /**@var $user UserEntity*/
         $user = $request->getAttribute('user');
 
         return $response
@@ -70,25 +70,25 @@ class RequestController
     // DUMMY
     //------------------------
 
-//    /**
-//     * @param $request Request
-//     * @param $response Response
-//     * @param $params array
-//     * @return Response
-//     */
-//    public function getDummies(Request $request,  Response $response, $params = []){
-//        try{
-//            $res = $this->service->getDummies();
-//            return $response
-//                ->withStatus( Responses::OK )
-//                ->withJson( $res );
-//
-//        }catch (RequestException $ex){
-//            return $response
-//                ->withStatus( $ex->getStatusCode() )
-//                ->withJson( $ex->getMessage()  );
-//        }
-//    }
+    /**
+     * @param $request Request
+     * @param $response Response
+     * @param $params array
+     * @return Response
+     */
+    public function getUsers(Request $request,  Response $response, $params = []){
+        try{
+            $res = $this->service->getDummies();
+            return $response
+                ->withStatus( Responses::OK )
+                ->withJson( $res );
+
+        }catch (RequestException $ex){
+            return $response
+                ->withStatus( $ex->getStatusCode() )
+                ->withJson( $ex->getMessage()  );
+        }
+    }
 
 
 

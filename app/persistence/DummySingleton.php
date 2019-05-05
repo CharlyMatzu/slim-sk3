@@ -4,7 +4,7 @@ use App\Exceptions\PersistenceException;
 use App\Exceptions\RequestException;
 use App\Includes\Responses;
 use App\Includes\SingletonExample;
-use App\Model\Dummy;
+use App\Model\User;
 use App\Model\People;
 
 class DummySingleton
@@ -151,7 +151,7 @@ class DummySingleton
 
 
     /**
-     * @param $dummy Dummy
+     * @param $dummy User
      * @return bool TRUE if success
      * @throws PersistenceException
      */

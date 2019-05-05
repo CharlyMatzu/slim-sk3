@@ -10,64 +10,31 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-
-//--------------------------
-// EXAMPLES
-//--------------------------
-
-/**
- * BASIC ENDPOINT SETUP
- * Using Slim\App instance to handle a GET, POST, PUT.... Request
- * determine type request and set 2 params like the next example:
- *      $app->request( pattern, callback ){}
- * Request: can be GET, POST, PUT, PATH, OPTIONS, e
- * pattern: is the uri path to use to handle the request, example '/', '/hello', '/hello/world/'
- * callback: is a callable function that will be called to handle the request,  this callback receive a
- * 2 or 3 params depending of the pattern. Params are
- *      Slim\Http\Request: Contain a Header, uri (route)
- *      Slim\Http\Response:
- *      array[]:
- */
-
-//-------- MIDDLEWARE
-// TODO: organize this comments
-
-//// Using a global middleware
-//// using with a function
-//$app->add(function (Request $req,  Response $res, callable $next) {
-//    // Do stuff before passing along
-//    $newResponse = $next($req, $res);
-//    // Do stuff after route is rendered
-//    return $newResponse; // continue
-//});
-//
-////this
-//$app->add(new \App\Middleware\RequestMiddleware());
-//// or
-//$app->add(\App\Middleware\RequestMiddleware::class);
-//
-//// using a specific method
-//// need to be instanced on middleware.php
-//$app->add( 'RequestMiddleware:example' );
-//
-//// making a chain
-//// call order is LIFE (Last In First Executed)
-//$app->add( 'RequestMiddleware:example' )->add( 'RequestMiddleware:example' )->add( 'RequestMiddleware:example' );
-
-
-
-
-
-
-//--------------- BASIC ROUTES
-
-// Simple New Route Function Signature
-$app->get('/', function (Request $req,  Response $res, $args = []) {
+// using map for multiple methods
+$app->map(['GET', 'POST'], '/', function (Request $req,  Response $res, $args = []) {
     return $res
         ->withStatus(200)
-        ->write('HELLO WORLD');
+        ->write('HELLO WORLD USING MAP ROUTE EXAMPLE');
+});
 
-}); //name for identification
+// Simple New Route Function Signature
+$app->get('/get', function (Request $req,  Response $res, $args = []) {
+    return $res->write('GET EXAMPLE');
+});
+
+$app->post('/post', function (Request $req,  Response $res, $args = []) {
+    return $res->write('POST EXAMPLE');
+});
+
+$app->put('/put', function (Request $req,  Response $res, $args = []) {
+    return $res->write('PUT EXAMPLE');
+});
+
+$app->any('/any', function (Request $req,  Response $res, $args = []) {
+    return $res
+        ->withStatus(200)
+        ->write('ANY EXAMPLE FOR ALL METHODS');
+});
 
 
 // Simple New Route Function Signature
@@ -86,6 +53,12 @@ $app->get('/info[/]', function (Request $req,  Response $res, $args = []) {
 
 })->setName("info route name"); //name for identification
 
+// using URL param
+$app->get('/hello/{name}', function( Request $request, Response $response, $args = [] ){
+    return $response
+        ->withStatus(200)
+        ->write("HELLO ". $args['name']);
+});
 
 // using headers
 $app->get('/headers/request', function (Request $req,  Response $res, $args = []) {
@@ -125,19 +98,31 @@ $app->get('/redirect/example', function (Request $req,  Response $res, $args = [
 // Use a custom callback controller using invoke method
 $app->get('/call/invoke', new App\Controller\RequestController() );
 
+// Use a custom callback controller using invoke method
+$app->get('/call/class', App\Controller\RequestController::class . ':classExample' );
+
 // Use a custom callback controller using an specific method
 // it need to be instanced on dependencies.php
 $app->get('/call/method', 'RequestController:methodExample');
 
 
-// using URL param
-$app->get('/hello/{name}', function( Request $request, Response $response, $args = [] ){
-    return $response
-        ->withStatus(200)
-        ->write("HELLO ". $args['name']);
-});
+
+//------------ Middleware examples
+// See more: http://www.slimframework.com/docs/v3/concepts/middleware.html
+
+$app->get('/midd', function (Request $req,  Response $res, $args = []) {
+    return $res->write("MIDDLEWARE");
+})->add('RequestMiddleware:testMiddleware');
 
 
+$app->get('/midd/real', 'RequestController:checkExample')
+    ->add('RequestMiddleware:checkBodyParams');
+/*
+    {
+        "name": "someone",
+        "email": "someone@mail.com"
+    }
+*/
 
 
 // -------------------------
@@ -152,11 +137,8 @@ data for this example of Rest API.
 EOD;
 
 $app->group('/dummy', function () {
-    
     //-----------------------ENDPOINTS
     $this->get('[/]', 'RequestController:');
-    
-
 });
 
 

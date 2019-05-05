@@ -48,17 +48,17 @@ $app->add( function (Request $request, Response $response, $next) {
     $res = \App\Includes\Responses::setCORStoResponse( $response );
     $res = $next($request, $res);
     return $res;
-//    return $next( $request, $response );
 });
 
 
 //--------------
 // CUSTOM
 //--------------
-$container['AuthMiddleware'] = function($c){
-    return new App\Middleware\AuthMiddleware();
+$container['RequestMiddleware'] = function($c){
+    return new App\Middleware\RequestMiddleware();
 };
 
-$container['InputMiddleware'] = function($c){
-    return new App\Middleware\InputMiddleware();
-};
+//$container['myService'] = function ($container) {
+//    $myService = new MyService();
+//    return $myService;
+//};

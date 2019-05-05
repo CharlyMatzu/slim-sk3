@@ -9,7 +9,7 @@
 use App\Exceptions\PersistenceException;
 use App\Includes\Responses;
 use App\Exceptions\RequestException;
-use App\Model\Dummy;
+use App\Model\User;
 use App\Persistence\DummySingleton;
 
 
@@ -60,7 +60,7 @@ class RequestService
     }
 
     /**
-     * @param $people Dummy
+     * @param $people User
      *
      * @return bool
      * @throws RequestException

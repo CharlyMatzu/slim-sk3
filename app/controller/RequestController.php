@@ -1,8 +1,8 @@
 <?php namespace App\Controller;
 
-use App\Exceptions\PersistenceException;
 use App\Exceptions\RequestException;
 use App\Includes\Responses;
+use App\Model\User;
 use App\Service\RequestService;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -39,10 +39,37 @@ class RequestController
      * @param $params array
      * @return Response
      */
+    public function classExample($request, $response, $params = []){
+        return $response
+            ->withStatus( 200 )
+            ->withJson( "USING CLASS METHOD"  );
+    }
+
+    /**
+     * @param $request Request
+     * @param $response Response
+     * @param $params array
+     * @return Response
+     */
     public function methodExample($request, $response, $params = []){
         return $response
             ->withStatus( 200 )
             ->withJson( "USING SPECIFIC METHOD"  );
+    }
+
+    /**
+     * @param $request Request
+     * @param $response Response
+     * @param $params array
+     * @return Response
+     */
+    public function checkExample($request, $response, $params = []){
+        /**@var $user User*/
+        $user = $request->getAttribute('user');
+
+        return $response
+            ->withStatus( 200 )
+            ->withJson( "MIDDLEWARE CHECK USER " . $user->getName()   );
     }
 
     //------------------------

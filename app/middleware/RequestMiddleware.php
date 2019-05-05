@@ -1,7 +1,7 @@
 <?php namespace App\Middleware;
 use App\Includes\Responses;
 use App\Includes\Utils;
-use App\Model\Dummy;
+use App\Model\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -17,30 +17,31 @@ class RequestMiddleware
 {
     function __construct() {}
 
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $next
+     * @return mixed
+     */
+    public function testMiddleware(Request $request, Response $response, $next){
+        $response->getBody()->write('BEFORE ');
+        $response = $next($request, $response);
+        $response->getBody()->write(' AFTER');
+        return $response;
+    }
+
+
+
+    //-------- Real middleware  example
+
     /**
      * @param $request Request
      * @param $response Response
      * @param $next callable (next middleware or controller to call)
      * @return Response
      */
-    public function __invoke($request, $response, $next){
-        $res = $next($request, $response);
-        return $res;
-    }
-
-
-    public function testMid_one($request, $response, $next){
-        $res = $next($request, $response);
-        return $res;
-    }
-
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $next callable (next middleware or controller to call)
-     * @return Response
-     */
-    public function checkBodyParams($request, $response, $next){
+    public function checkBodyParams(Request $request, Response $response, $next){
         $body = $request->getParsedBody();
 
         // also can use $request->getQueryParams()['myParam']
@@ -50,41 +51,19 @@ class RequestMiddleware
 
         $name = $body['name'];
         $email = $body['email'];
-        $date = $body['date'];
-        $age = $body['age'];
-        $address = $body['address'];
 
-        if( empty( $name ) || empty( $email ) || empty( $date ) || empty( $age ) || empty( $address ) )
+        if( empty( $name ) || empty( $email ))
             return $response->withStatus( Responses::BAD_REQUEST )->write( "Empty params" );
 
-        $people = new Dummy( $name, $date, $age, $email, $address );
+        $user = new User( $name, $email);
 
         // sharing a object in the app with request
-        $request = $request->withAttribute( 'people', $people);
+        $request = $request->withAttribute( 'user', $user);
 
         // Call next callable method
-        $res = $next($request, $response);
-        return $res;
+        $response = $next($request, $response);
+        return $response;
     }
-
-
-//    /**
-//     * @param $request Request
-//     * @param $response Response
-//     * @param $next callable (next middleware or controller to call)
-//     * @return Response
-//     */
-//    public function authHeader($request, $response, $next){
-//        $header = $request->getHeader('Authorization');
-//        if( empty($header) )
-//            return $response->withStatus( Responses::UNAUTHORIZED )->write("Missing Authorization header" );
-//
-//        if( $header[0] !== Utils::$token_dummy )
-//            return $response->withStatus( Responses::UNAUTHORIZED )->write("Access Denied, Invalid Access Token (Test)" );
-//
-//        $res = $next($request, $response);
-//        return $res;
-//    }
 
 
 }

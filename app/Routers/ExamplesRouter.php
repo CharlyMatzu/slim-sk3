@@ -1,12 +1,10 @@
 <?php
 
-use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
 
-// using map for multiple methods
-$app->map(['GET', 'POST'], '/', function (Request $request,  Response $response, $params = []) {
+$app->map(['GET', 'POST'], '/', function (Request $request, Response $response, $params = []) {
     return $response
         ->withStatus(200)
         ->write('HELLO WORLD USING MAP ROUTE EXAMPLE');
@@ -129,7 +127,7 @@ $app->any('/view', function (Request $request,  Response $response, $params = []
 
 // ----------- USING GROUPS
 
-$app->group('/group', function (App $app) {
+$app->group('/group', function (\Slim\App $app) {
 
     $app->any('/test', function (Request $request,  Response $response, $params = []) {
         return $response->write("using groups");

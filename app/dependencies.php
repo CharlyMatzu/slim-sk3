@@ -31,37 +31,32 @@ $container['view'] = function ($con) {
  * @return \App\Controller\RequestController
  */
 $container['RequestController'] = function($con){
-    return new App\Controller\RequestController();
+    $view   = $con->get('view');
+    return new App\Controller\RequestController($view);
 };
-
-// ---------------- SERVICES
 
 /**
  * @param $con \Slim\Container
- * @return \App\Service\RequestService
+ * @return \App\Controller\UsersController
  */
-$container['RequestService'] = function ($con) {
-    $service = new \App\Service\RequestService();
-    return $service;
+$container['UsersController'] = function($con){
+    $logger = $con->get('logger');
+    $table  = $con->get('skeleton')->table('');
+    return new App\Controller\UsersController($logger, $table);
 };
 
-// ---------------- DB
+
 /**
+ * Service factory for the ORM
  * @param $con \Slim\Container
  * @return \Illuminate\Database\Capsule\Manager as Database
  */
 $container['db'] = function ($con) {
-    $database = new Illuminate\Database\Capsule\Manager();
-    $database->addConnection([
-        'driver'    => 'mysql',
-        'database'  => 'Skeleton',
-        'username'  => 'skeleton_user',
-        'password'  => 'skeleton_pass',
-        'charset'   => 'utf8',
-        'collation' => 'utf8_unicode_ci'
-    ]);
-    $database->setAsGlobal();
-    $database->bootEloquent();
+    $capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($con['settings']['db']);
 
-    return $database;
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+
+    return $capsule;
 };

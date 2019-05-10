@@ -1,9 +1,9 @@
 <?php namespace App\Service;
 
+use App\Utils\Singleton;
 
-class RequestService
+class UserService extends Singleton
 {
-
     public function getUser($idUser){ }
 
     public function getUsers(){ }

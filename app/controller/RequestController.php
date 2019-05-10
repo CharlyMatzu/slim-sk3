@@ -3,18 +3,13 @@
 use App\Exceptions\RequestException;
 use App\Utils\Responses;
 use App\Entities\UserEntity;
-use App\Service\RequestService;
+use App\Service\UserService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class RequestController
+class RequestController extends BaseController
 {
-    private $service;
-    function __construct() {
-        $this->service = new RequestService();
-    }
-
     /**
      * @param $request Request
      * @param $response Response
@@ -65,31 +60,5 @@ class RequestController
             ->withStatus( 200 )
             ->withJson( "MIDDLEWARE CHECK USER " . $user->getName()   );
     }
-
-    //------------------------
-    // DUMMY
-    //------------------------
-
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function getUsers(Request $request,  Response $response, $params = []){
-        try{
-            $res = $this->service->getDummies();
-            return $response
-                ->withStatus( Responses::OK )
-                ->withJson( $res );
-
-        }catch (RequestException $ex){
-            return $response
-                ->withStatus( $ex->getStatusCode() )
-                ->withJson( $ex->getMessage()  );
-        }
-    }
-
-
 
 }

@@ -1,6 +1,9 @@
 <?php
 
-// --- ENVIRONMENT
+// ------------------
+// ENVIRONMENT
+// ------------------
+
 $dotenv = Dotenv\Dotenv::create(ROOT_PATH);
 $dotenv->overload();
 // required
@@ -8,7 +11,12 @@ $dotenv->required(['DISPLAY_ERRORS', 'HOST', 'DB_HOST', 'DB_NAME', 'DB_USER', 'D
 $dotenv->required(['ENVIRONMENT'])->allowedValues(['PRD', 'DEV']);
 
 
-// ----- SLIM FRAMEWORK SETTINGS
+
+
+
+// ------------------
+// SLIM FRAMEWORK SETTINGS
+// ------------------
 return [
     'settings' => [
         'displayErrorDetails' => getenv('DISPLAY_ERRORS'),
@@ -31,8 +39,6 @@ return [
             'collation' => 'utf8_unicode_ci',
             'prefix'    => ''
         ],
-
-        
 
         // Renderer settings
     //    'renderer' => [

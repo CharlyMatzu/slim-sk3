@@ -16,6 +16,7 @@ $container['db'] = function ($container) {
 };
 
 /**
+ * Twig render
  * @param $container \Slim\Container
  * @return \Slim\Views\Twig
  */

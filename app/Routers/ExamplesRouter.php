@@ -29,6 +29,13 @@ $app->any('/any', function (Request $request,  Response $response, $params = [])
         ->write('ANY EXAMPLE FOR ALL METHODS');
 });
 
+$app->map(['POST', 'PUT'], '/body', function (Request $request,  Response $response, $params = []){
+    $body = $request->getParsedBody();
+    return $response
+        ->withStatus(200)
+        ->withJson($body);
+});
+
 
 // Simple New Route Function Signature
 $app->get('/info[/]', function (Request $request,  Response $response, $params = []) {

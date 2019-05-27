@@ -1,8 +1,8 @@
-<?php namespace App\Entities;
+<?php namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class UserEntity extends Model
+class User extends Model
 {
     protected $table = 'Users';
     protected $primaryKey = 'id';

@@ -89,7 +89,7 @@ $app->get('/redirect/example', function (Request $request,  Response $response, 
 });
 
 // Use a custom callback controller using invoke method
-$app->get('/call/invoke', new \App\Controller\RequestController() );
+$app->get('/call/invoke', new \App\Controller\RequestController($container) );
 
 // Use a custom callback controller using invoke method
 $app->get('/call/class', \App\Controller\RequestController::class . ':classExample' );

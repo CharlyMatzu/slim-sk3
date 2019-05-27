@@ -1,11 +1,13 @@
 <?php
 
-$app->group('/user', function (Slim\App $app) {
+$app->get('/users', 'UsersController:getUsers');
 
-    $app->get('[/]', 'RequestController:getUsers');
+//$app->group('/users', function (Slim\App $app) {
 
-    $app->get('/{id}', 'RequestController:getUser');
+//    $app->get('', 'RequestController:getUsers');
 
-});
+//    $app->get('{id}', 'RequestController:getUser');
+
+//});
 
 

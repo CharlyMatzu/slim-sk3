@@ -2,7 +2,8 @@
 
 
 use App\Exceptions\RequestException;
-use App\Utils\Responses;
+use App\Classes\HttpUtils;
+use App\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -14,17 +15,8 @@ class UsersController extends BaseController
      * @param $params array
      * @return Response
      */
-    public function getUsers(Request $request,  Response $response, $params = []){
-//        try{
-//            $res = $this->service->getDummies();
-//            return $response
-//                ->withStatus( Responses::OK )
-//                ->withJson( $res );
-//
-//        }catch (RequestException $ex){
-//            return $response
-//                ->withStatus( $ex->getStatusCode() )
-//                ->withJson( $ex->getMessage()  );
-//        }
+    public function getUsers($request,  $response, $params = []){
+        $users = User::get();
+        return $response->write($users);
     }
 }

@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Carlos R. Zuñiga
- * Date: 20/08/2018
- * Time: 04:02 PM
- */
 
 error_reporting( E_ERROR | E_PARSE );
 
@@ -21,4 +15,4 @@ define('LOG_ACTIVITY',  LOG_PATH . DS . 'activity');
 define('LOG_DEBUG',  LOG_PATH . DS . 'debug');
 define('LOG_ERROR',  LOG_PATH . DS . 'error');
 
-define('HOST', '/slim-skeleton');
+//define('HOST', '/slim-skeleton');

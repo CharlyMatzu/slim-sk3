@@ -1,12 +1,25 @@
 <?php
 
-// ---------------- RENDER
+/**
+ * Service factory for the ORM
+ * @param $container \Slim\Container
+ * @return \Illuminate\Database\Capsule\Manager as Database
+ */
+$container['db'] = function ($container) {
+    $capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($container['settings']['db']);
+
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+
+    return $capsule;
+};
 
 /**
- * @param $con \Slim\Container
+ * @param $container \Slim\Container
  * @return \Slim\Views\Twig
  */
-$container['view'] = function ($con) {
+$container['view'] = function ($container) {
     $paths = [
         'public/views',
         // 'public/views/login'
@@ -16,7 +29,7 @@ $container['view'] = function ($con) {
     ]);
 
     // Instantiate and add Slim specific extension
-    $router = $con->get('router');
+    $router = $container->get('router');
     $uri = \Slim\Http\Uri::createFromEnvironment( new \Slim\Http\Environment( $_SERVER ) );
     $view->addExtension( new \Slim\Views\TwigExtension($router, $uri) );
 
@@ -24,39 +37,45 @@ $container['view'] = function ($con) {
 };
 
 
-// ---------------- CONTROLLERS
+// ---------------------------
+// CONTROLLERS
+// ---------------------------
 
 /**
- * @param $con \Slim\Container
+ * @param $container \Slim\Container
  * @return \App\Controller\RequestController
  */
-$container['RequestController'] = function($con){
-    $view   = $con->get('view');
-    return new App\Controller\RequestController($view);
+$container['RequestController'] = function($container){
+    return new App\Controller\RequestController($container);
 };
 
 /**
- * @param $con \Slim\Container
+ * @param $container \Slim\Container
  * @return \App\Controller\UsersController
  */
-$container['UsersController'] = function($con){
-    $logger = $con->get('logger');
-    $table  = $con->get('skeleton')->table('');
-    return new App\Controller\UsersController($logger, $table);
+$container['UsersController'] = function($container){
+    return new App\Controller\UsersController($container);
 };
 
+// ---------------------------
+// SERVICES
+// ---------------------------
+$container['UsersService'] = function($container){
+    return new \App\Services\UsersService($container);
+};
 
-/**
- * Service factory for the ORM
- * @param $con \Slim\Container
- * @return \Illuminate\Database\Capsule\Manager as Database
- */
-$container['db'] = function ($con) {
-    $capsule = new \Illuminate\Database\Capsule\Manager;
-    $capsule->addConnection($con['settings']['db']);
+// ---------------------------
+// OTHERS
+// ---------------------------
 
-    $capsule->setAsGlobal();
-    $capsule->bootEloquent();
+$container['csrf'] = function($container) {
+    return new \Slim\Csrf\Guard;
+};
 
-    return $capsule;
+$container['Logger'] = function($container) {
+    return new \App\Classes\FlatLogger();
+};
+
+$container['HttpUtils'] = function($container) {
+    return new \App\Classes\HttpUtils();
 };

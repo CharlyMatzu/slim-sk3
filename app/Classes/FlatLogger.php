@@ -1,12 +1,5 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: Emcor
- * Date: 06/09/2018
- * Time: 10:19 AM
- */
+<?php namespace App\Classes;
 
-namespace App\Utils;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -39,13 +32,13 @@ class FlatLogger
     /**
      * Create a logger depending of the type
      * NOTE: Require write permission
-     * @param $logTitle String Title to identify log line
      * @param $path String path of the log
      * @param $type int level type, @see Logger::INFO
      * @param $message String log description
      * @param $extra array Extra information
+     * @param null $exception Exception
      */
-    private static function makeLog($logTitle, $path, $type, $message, $extra ){
+    private function makeLog($path, $type, $message, $extra = [], $exception = null){
 
         // file name using current date
         $log_name = date("Y-m-d" );
@@ -60,7 +53,7 @@ class FlatLogger
         }
 
         try {
-            $log = new Logger( $logTitle );
+            $log = new Logger( 'Logger' );
             $log->pushHandler(new StreamHandler($file, $type));
 
             switch ( $type ){
@@ -73,18 +66,18 @@ class FlatLogger
 
         } catch (\Exception $e) {
             // TODO: Use alternative logger using function file_put_contents()
-//            file_put_contents( $file, "probando\r\n", FILE_APPEND );
+            // file_put_contents( $file, "probando\r\n", FILE_APPEND );
         }
     }
 
-    //TODO: add log title for custom cases
     /**
      * Use for Critical Error Logging
      * @param $message String log description
      * @param $extra array Extra information
+     * @param null $exception
      */
-    public static function makeErrorLog($message, $extra = []){
-        self::makeLog( "Error-Logging", LOG_ERROR, Logger::ERROR, $message, $extra );
+    public function makeErrorLog($message, $extra = [], $exception = null){
+        $this->makeLog(LOG_PATH_ERROR, Logger::ERROR, $message, $extra );
     }
 
     /**
@@ -92,8 +85,8 @@ class FlatLogger
      * @param $message String log description
      * @param $extra array Extra information
      */
-    public static function makeInfoLog($message, $extra = []){
-        self::makeLog( "Info-Logging", LOG_ACTIVITY, Logger::INFO, $message, $extra );
+    public function makeInfoLog($message, $extra = []){
+        $this->makeLog(LOG_PATH_ACTIVITY, Logger::INFO, $message, $extra );
     }
 
 
@@ -102,8 +95,8 @@ class FlatLogger
      * @param $message String log description
      * @param $extra array Extra information
      */
-    public static function makeDebugLog($message, $extra = []){
-        self::makeLog( "Debug-Logging", LOG_DEBUG, Logger::DEBUG, $message, $extra );
+    public function makeDebugLog($message, $extra = []){
+        $this->makeLog( LOG_PATH_DEBUG, Logger::DEBUG, $message, $extra );
     }
 
 }

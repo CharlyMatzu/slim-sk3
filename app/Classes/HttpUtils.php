@@ -1,15 +1,9 @@
-<?php namespace App\Utils;
+<?php namespace App\Classes;
 
 use Slim\Http\Response;
 
-/**
- * Created by PhpStorm.
- * User: Carlos R. Zuñiga
- * Date: 27/08/2018
- * Time: 10:49 AM
- */
 
-class Responses
+class HttpUtils
 {
 
     //---------------------------
@@ -62,12 +56,12 @@ class Responses
     /**
      * @param $response Response
      * @param $statusCode int HTTP response status code
-     * @see Responses
-     * @see Responses::OK
+     * @see HttpUtils
+     * @see HttpUtils::OK
      * @param $message String message for response
      * @return Response
      */
-    public static function makeMessageResponse($response, $statusCode, $message){
+    public function makeMessageResponse($response, $statusCode, $message){
         return $response
             ->withStatus( $statusCode )
             ->withHeader( 'Content-Type', 'application/json' )
@@ -85,10 +79,10 @@ class Responses
      * @param $json_key String json key name to identify element
      * @param $result @mixed values
      * @return Response
-     * @see Responses
-     * @see Responses::OK
+     * @see HttpUtils
+     * @see HttpUtils::OK
      */
-    public static function makeResultResponse($response, $statusCode, $json_key, $result){
+    public function makeResultResponse($response, $statusCode, $json_key, $result){
         return $response
             ->withStatus( $statusCode )
             ->withHeader( 'Content-Type', 'application/json' )
@@ -99,20 +93,5 @@ class Responses
                 ]
             );
     }
-
-    /**
-     * Add Cross-origin resource sharing ( CORS ) to response
-     * @param $response Response
-     * @return Response
-     */
-    public static function setCORStoResponse($response){
-//        return $response;
-        return $response
-                ->withHeader('Access-Control-Allow-Origin', '*')
-                ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
-                ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
-    }
-
-
 
 }

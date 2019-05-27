@@ -1,9 +1,9 @@
 <?php namespace App\Controller;
 
 use App\Exceptions\RequestException;
-use App\Utils\Responses;
-use App\Entities\UserEntity;
-use App\Service\UserService;
+use App\Classes\HttpUtils;
+use App\Models\User;
+use App\Services\UsersService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -53,7 +53,7 @@ class RequestController extends BaseController
      * @return Response
      */
     public function checkExample(Request $request,  Response $response, $params = []){
-        /**@var $user UserEntity*/
+        /**@var $user User*/
         $user = $request->getAttribute('user');
 
         return $response

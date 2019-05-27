@@ -1,9 +1,6 @@
 <?php
 
-use App\Classes\FlatLogger;
 use App\Classes\HttpUtils;
-use Slim\Http\Request;
-use Slim\Http\Response;
 
 
 $container['errorHandler'] = function($container) {
@@ -14,7 +11,7 @@ $container['errorHandler'] = function($container) {
      * @return mixed
      */
     return function ($request, $response, $ex) use ($container) {
-        $container->Logger->makeErrorLog( "ErrorHandler: " );
+        $container->Logger->makeErrorLog( 'ErrorHandler: ', $ex);
         return $container->HttpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Something went wrong");
     };
 };
@@ -28,7 +25,10 @@ $container['notFoundHandler'] = function ($container) {
      * @return \Slim\Http\Response
      */
     return function ($request, $response) use ($container) {
-        return $container->HttpUtils->makeMessageResponse( $response, HttpUtils::NOT_FOUND, "Route does not exist" );
+        $uri = $request->getUri();
+        $url = $uri->getBaseUrl()."/".$uri->getPath();
+        $message = 'Route does not exist - ' .$request->getMethod().": ".$url;
+        return $container->HttpUtils->makeMessageResponse( $response, HttpUtils::NOT_FOUND, $message );
     };
 };
 
@@ -45,7 +45,7 @@ $container['notAllowedHandler'] = function ($container) {
         return $container->HttpUtils->makeMessageResponse(
             $response,
             HttpUtils::METHOD_NOT_ALLOWED,
-            "Method not allowed. Must be one of: " . implode(',', $methods) );
+            'Method '.$request->getMethod().' not allowed. Must be one of: ' . implode(',', $methods) );
     };
 };
 
@@ -59,8 +59,8 @@ $container['phpErrorHandler'] = function ($container) {
      * @return \Slim\Http\Response
      */
     return function ($request, $response, $error) use ($container) {
-        $container->Logger->makeErrorLog("PHPErrorHandler: ".$error);
-        return $container->HttpUtils->makeMessageResponse( $response, HttpUtils::INTERNAL_SERVER_ERROR, "An internal error has occurred" );
+        $container->Logger->makeErrorLog('PHPErrorHandler: '.$error);
+        return $container->HttpUtils->makeMessageResponse( $response, HttpUtils::INTERNAL_SERVER_ERROR, 'Something went wrong' );
     };
 };
 

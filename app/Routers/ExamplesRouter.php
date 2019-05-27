@@ -38,9 +38,11 @@ $app->get('/info[/]', function (Request $request,  Response $response, $params =
     return $response
         ->withStatus(200)
         ->withJson([
-            "name" => $route->getName(),
-            "groups" => $route->getGroups(),
-            "methods" => $route->getMethods(),
+            "URL"       => $_SERVER['REQUEST_URI'],
+            "pattern"   => $route->getPattern(),
+            "name"      => $route->getName(),
+            "groups"    => $route->getGroups(),
+            "methods"   => $route->getMethods(),
             "arguments" => $route->getArguments()
         ]);
 
@@ -89,10 +91,10 @@ $app->get('/redirect/example', function (Request $request,  Response $response, 
 });
 
 // Use a custom callback controller using invoke method
-$app->get('/call/invoke', new \App\Controller\RequestController($container) );
+$app->get('/call/invoke', new \App\Controllers\RequestController($container) );
 
 // Use a custom callback controller using invoke method
-$app->get('/call/class', \App\Controller\RequestController::class . ':classExample' );
+$app->get('/call/class', \App\Controllers\RequestController::class . ':classExample' );
 
 // Use a custom callback controller using an specific method
 // it need to be instanced on dependencies.php
@@ -149,21 +151,9 @@ $app->post('/file', function(Request $request,  Response $response, $params = []
     $file = $uploadedFiles['some_image'];
 
     if ($file->getError() === UPLOAD_ERR_OK){
-        $filename = moveUploadedFile($directory, $file);
+        $filename = $this->Files->moveUploadedFile($directory, $file); // TODO: check
         return $response->write($filename);
     }
 
     return $response->write("An error has ocurred");
 });
-
-
-function moveUploadedFile($directory, UploadedFile $uploadedFile)
-{
-    $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
-    $basename = bin2hex(random_bytes(8)); // see http://php.net/manual/en/function.random-bytes.php
-    $filename = sprintf('%s.%0.8s', $basename, $extension);
-
-    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
-
-    return $filename;
-}

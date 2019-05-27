@@ -35,33 +35,25 @@ class FlatLogger
      * @param $path String path of the log
      * @param $type int level type, @see Logger::INFO
      * @param $message String log description
-     * @param $extra array Extra information
-     * @param null $exception Exception
+     * @param $extra String Extra information
      */
-    private function makeLog($path, $type, $message, $extra = [], $exception = null){
+    private function makeLog($path, $type, $message, $extra){
 
         // file name using current date
         $log_name = date("Y-m-d" );
         $file = $path . "/" . $log_name . ".log";
 
-        //check if is empty
-        if( empty($extra) )
-            $extra = [];
-        //if is an object cast to array
-        if( !is_array($extra) ){
-            $extra = ["extra" => (String)$extra];
-        }
-
         try {
             $log = new Logger( 'Logger' );
             $log->pushHandler(new StreamHandler($file, $type));
+            $logMessage = $message ." ". $extra;
 
             switch ( $type ){
-                case Logger::INFO: $log->addInfo( $message, $extra ); break;
-                case Logger::ERROR: $log->addError( $message, $extra ); break;
-                case Logger::DEBUG: $log->addDebug( $message, $extra ); break;
+                case Logger::INFO:  $log->addInfo($logMessage); break;
+                case Logger::ERROR: $log->addError($logMessage); break;
+                case Logger::DEBUG: $log->addDebug($logMessage); break;
 
-                default: $log->addInfo( $message, $extra );
+                default: $log->addInfo($logMessage);
             }
 
         } catch (\Exception $e) {
@@ -73,30 +65,31 @@ class FlatLogger
     /**
      * Use for Critical Error Logging
      * @param $message String log description
-     * @param $extra array Extra information
-     * @param null $exception
+     * @param $ex \Exception
+     * @param $data String
      */
-    public function makeErrorLog($message, $extra = [], $exception = null){
-        $this->makeLog(LOG_PATH_ERROR, Logger::ERROR, $message, $extra );
+    public function makeErrorLog($message, $ex = null, $data = ""){
+        if($ex != null) $data .= $ex->getMessage() .' '. $ex->getTraceAsString();
+        $this->makeLog(LOG_PATH_ERROR, Logger::ERROR, $message, $data);
     }
 
     /**
      * Use for Information logging like SQL log or activities
      * @param $message String log description
-     * @param $extra array Extra information
+     * @param $data String Extra information
      */
-    public function makeInfoLog($message, $extra = []){
-        $this->makeLog(LOG_PATH_ACTIVITY, Logger::INFO, $message, $extra );
+    public function makeInfoLog($message, $data = ""){
+        $this->makeLog(LOG_PATH_ACTIVITY, Logger::INFO, $message, $data);
     }
 
 
     /**
      * Use for Debugging
      * @param $message String log description
-     * @param $extra array Extra information
+     * @param $data String Extra information
      */
-    public function makeDebugLog($message, $extra = []){
-        $this->makeLog( LOG_PATH_DEBUG, Logger::DEBUG, $message, $extra );
+    public function makeDebugLog($message, $data = ""){
+        $this->makeLog( LOG_PATH_DEBUG, Logger::DEBUG, $message, $data );
     }
 
 }

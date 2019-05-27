@@ -1,17 +1,10 @@
 <?php
 
 /**
- * Service factory for the ORM
  * @param $container \Slim\Container
- * @return \Illuminate\Database\Capsule\Manager as Database
+ * @return \Illuminate\Database\Capsule\Manager
  */
-$container['db'] = function ($container) {
-    $capsule = new \Illuminate\Database\Capsule\Manager;
-    $capsule->addConnection($container['settings']['db']);
-
-    $capsule->setAsGlobal();
-    $capsule->bootEloquent();
-
+$container['db'] = function ($container) use ($capsule) {
     return $capsule;
 };
 
@@ -44,18 +37,18 @@ $container['view'] = function ($container) {
 
 /**
  * @param $container \Slim\Container
- * @return \App\Controller\RequestController
+ * @return \App\Controllers\RequestController
  */
 $container['RequestController'] = function($container){
-    return new App\Controller\RequestController($container);
+    return new App\Controllers\RequestController($container);
 };
 
 /**
  * @param $container \Slim\Container
- * @return \App\Controller\UsersController
+ * @return \App\Controllers\UsersController
  */
 $container['UsersController'] = function($container){
-    return new App\Controller\UsersController($container);
+    return new App\Controllers\UsersController($container);
 };
 
 // ---------------------------
@@ -79,4 +72,8 @@ $container['Logger'] = function($container) {
 
 $container['HttpUtils'] = function($container) {
     return new \App\Classes\HttpUtils();
+};
+
+$container['Files'] = function($container) {
+    return new \App\Classes\Files();
 };

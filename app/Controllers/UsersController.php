@@ -1,4 +1,4 @@
-<?php namespace App\controller;
+<?php namespace App\Controllers;
 
 
 use App\Exceptions\RequestException;
@@ -16,6 +16,7 @@ class UsersController extends BaseController
      * @return Response
      */
     public function getUsers($request,  $response, $params = []){
+        // $this->container
         $users = User::get();
         return $response->write($users);
     }

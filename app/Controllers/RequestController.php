@@ -1,9 +1,6 @@
-<?php namespace App\Controller;
+<?php namespace App\Controllers;
 
-use App\Exceptions\RequestException;
-use App\Classes\HttpUtils;
 use App\Models\User;
-use App\Services\UsersService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

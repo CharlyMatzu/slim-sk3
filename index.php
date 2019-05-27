@@ -8,9 +8,9 @@ define('APP_PATH',  ROOT_PATH . DS . 'app');
 
 // Keep in mind the log location. Apache (server) will be the owner and only root or directory owner (of logs) will be able to manage those file
 define('LOG_PATH',  ROOT_PATH . DS . 'logs');
-define('LOG_ACTIVITY',  LOG_PATH . DS . 'activity');
-define('LOG_DEBUG',  LOG_PATH . DS . 'debug');
-define('LOG_ERROR',  LOG_PATH . DS . 'error');
+define('LOG_PATH_ACTIVITY',  LOG_PATH . DS . 'activity');
+define('LOG_PATH_DEBUG',  LOG_PATH . DS . 'debug');
+define('LOG_PATH_ERROR',  LOG_PATH . DS . 'error');
 
 // ----------- COMPOSER
 require_once "vendor/autoload.php";
@@ -21,6 +21,9 @@ $settings = require APP_PATH . '/settings.php';
 $app = new \Slim\App( $settings );
 
 $container = $app->getContainer();
+
+// Eloquent configuration
+require APP_PATH . '/database.php';
 
 // Set up dependencies
 require APP_PATH . '/dependencies.php';

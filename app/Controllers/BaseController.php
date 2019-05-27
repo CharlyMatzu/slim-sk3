@@ -1,12 +1,12 @@
-<?php namespace App\Controller;
+<?php namespace App\Controllers;
 
 use Illuminate\Database\Query\Builder;
 use Psr\Log\LoggerInterface;
 use Slim\Views\Twig;
 
 abstract class BaseController{
-    protected $container;
 
+    protected $container;
     public function __construct($container)
     {
         $this->container = $container;

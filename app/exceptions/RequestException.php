@@ -1,11 +1,4 @@
 <?php namespace App\Exceptions;
-/**
- * Created by PhpStorm.
- * User: Carlos R. Zuñiga
- * Date: 27/08/2018
- * Time: 01:59 PM
- */
-
 use \Exception;
 
 class RequestException extends Exception

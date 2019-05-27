@@ -1,80 +1,66 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Carlos R. Zuñiga
- * Date: 27/08/2018
- * Time: 09:24 AM
- */
 
-use App\includes\FlatLogger;
-use App\Includes\Responses;
-use Slim\Http\Request;
-use Slim\Http\Response;
+use App\Classes\HttpUtils;
 
-/**
- * CORS middleware does execute when and error occurs, is required add cors in response in error handlers
- */
 
-$container['errorHandler'] = function($c) {
+$container['errorHandler'] = function($container) {
     /**
      * @param $request \Slim\Http\Request
      * @param $response \Slim\Http\Response
      * @param $ex RuntimeException
      * @return mixed
      */
-    return function ($request, $response, $ex) use ($c) {
-        $res = \App\Includes\Responses::setCORStoResponse($response);
-        FlatLogger::makeErrorLog( "ErrorHandler: ".$ex->getFile()."[".$ex->getLine()."] --- ".$ex->getMessage() ." --- Trace: ". $ex->getTraceAsString() );
-
-        return Responses::makeMessageResponse($res, Responses::INTERNAL_SERVER_ERROR, "Something went wrong");
+    return function ($request, $response, $ex) use ($container) {
+        $container->Logger->makeErrorLog( 'ErrorHandler: ', $ex);
+        return $container->HttpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Something went wrong");
     };
 };
 
 
 //Override the default Not Found Handler
-$container['notFoundHandler'] = function ($c) {
+$container['notFoundHandler'] = function ($container) {
     /**
      * @param $request \Slim\Http\Request
      * @param $response \Slim\Http\Response
      * @return \Slim\Http\Response
      */
-    return function ($request, $response) use ($c) {
-        $res = \App\Includes\Responses::setCORStoResponse($response);
-        return Responses::makeMessageResponse( $res, Responses::NOT_FOUND, "Route does Not exist" );
+    return function ($request, $response) use ($container) {
+        $uri = $request->getUri();
+        $url = $uri->getBaseUrl()."/".$uri->getPath();
+        $message = 'Route does not exist - ' .$request->getMethod().": ".$url;
+        return $container->HttpUtils->makeMessageResponse( $response, HttpUtils::NOT_FOUND, $message );
     };
 };
 
 
 // Override the default Not Found Handler
-$container['notAllowedHandler'] = function ($c) {
+$container['notAllowedHandler'] = function ($container) {
     /**
      * @param $request \Slim\Http\Request
      * @param $response \Slim\Http\Response
      * @param $methods array
      * @return \Slim\Http\Response
      */
-    return function (Request $request, Response $response, $methods) use ($c) {
-        $res = \App\Includes\Responses::setCORStoResponse($response);
-        return Responses::makeMessageResponse(
-            $res,
-            Responses::METHOD_NOT_ALLOWED,
-            "Method not allowed. Must be one of: " . implode(',', $methods) );
+    return function ($request, $response, $methods) use ($container) {
+        return $container->HttpUtils->makeMessageResponse(
+            $response,
+            HttpUtils::METHOD_NOT_ALLOWED,
+            'Method '.$request->getMethod().' not allowed. Must be one of: ' . implode(',', $methods) );
     };
 };
 
 
 
-$container['phpErrorHandler'] = function ($c) {
+$container['phpErrorHandler'] = function ($container) {
     /**
      * @param $request \Slim\Http\Request
      * @param $response \Slim\Http\Response
      * @param $error
      * @return \Slim\Http\Response
      */
-    return function ($request, $response, $error) use ($c) {
-        $res = \App\Includes\Responses::setCORStoResponse($response);
-        \App\includes\FlatLogger::makeErrorLog("PHPErrorHandler: ".$error);
-        return Responses::makeMessageResponse( $res, Responses::INTERNAL_SERVER_ERROR, "An internal error has occurred" );
+    return function ($request, $response, $error) use ($container) {
+        $container->Logger->makeErrorLog('PHPErrorHandler: '.$error);
+        return $container->HttpUtils->makeMessageResponse( $response, HttpUtils::INTERNAL_SERVER_ERROR, 'Something went wrong' );
     };
 };
 

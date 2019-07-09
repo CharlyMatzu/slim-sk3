@@ -4,7 +4,13 @@
  * @param $container \Slim\Container
  * @return \Illuminate\Database\Capsule\Manager
  */
-$container['db'] = function ($container) use ($capsule) {
+$container['db'] = function ($container) {
+    $capsule = new \Illuminate\Database\Capsule\Manager;
+    $capsule->addConnection($container['settings']['db']);
+
+    $capsule->setAsGlobal();
+    $capsule->bootEloquent();
+
     return $capsule;
 };
 

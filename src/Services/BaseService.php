@@ -1,4 +1,4 @@
-<?php namespace App\Services;
+<?php namespace Src\Services;
 
 
 abstract class BaseService

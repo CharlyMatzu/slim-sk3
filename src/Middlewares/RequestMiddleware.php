@@ -1,4 +1,4 @@
-<?php namespace App\Middlewares;
+<?php namespace Src\Middlewares;
 
 use Slim\Http\Request;
 use Slim\Http\Response;

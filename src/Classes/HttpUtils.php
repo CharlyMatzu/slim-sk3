@@ -1,4 +1,4 @@
-<?php namespace App\Classes;
+<?php namespace Src\Classes;
 
 use Slim\Http\Response;
 

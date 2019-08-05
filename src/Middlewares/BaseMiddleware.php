@@ -1,4 +1,4 @@
-<?php namespace App\Middlewares;
+<?php namespace Src\Middlewares;
 
 
 abstract class BaseMiddleware

@@ -20,17 +20,13 @@ return [
         'displayErrorDetails' => getenv('DISPLAY_ERRORS'),
         'determineRouteBeforeAppMiddleware' => true,
 
-        // Custom
-        // 'control' => [
-        //     'upload_directory' => ROOT_PATH . '/public/uploads',
-        // ],
-
-        // Monolog settings
-        // 'logger' => [
-        //     'name' => 'slim-app',
-        //     'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
-        //     'level' => \Monolog\Logger::DEBUG,
-        // ],
+        'render' => [
+            'paths' => [
+                'public/views',
+                // 'public/views/login'
+            ],
+            'cache' => 'src/cache'
+        ],
     
         // Eloquent configuration
         'db' => [
@@ -43,6 +39,14 @@ return [
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
-        ]
+        ],
+
+
+        // Monolog settings
+        // 'logger' => [
+        //     'name' => 'slim-app',
+        //     'path' => isset($_ENV['docker']) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
+        //     'level' => \Monolog\Logger::DEBUG,
+        // ],
     ],
 ];

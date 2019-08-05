@@ -1,12 +1,14 @@
-<?php namespace App\Controllers;
+<?php namespace Src\Controllers;
 
-use App\Models\User;
+use Src\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
 
-class RequestController extends BaseController
+class RequestController
 {
+    public function __construct(){}
+
     /**
      * @param $request Request
      * @param $response Response

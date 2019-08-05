@@ -1,8 +1,8 @@
-<?php namespace App\Controllers;
+<?php namespace Src\Controllers;
 
 
-use App\Classes\HttpUtils;
-use App\Models\User;
+use Src\Classes\HttpUtils;
+use Src\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 

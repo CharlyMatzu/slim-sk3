@@ -1,4 +1,4 @@
-<?php namespace App\Exceptions;
+<?php namespace Src\Exceptions;
 
 class PersistenceException extends \Exception
 {

@@ -20,12 +20,9 @@ $container['db'] = function ($container) {
  * @return \Slim\Views\Twig
  */
 $container['view'] = function ($container) {
-    $paths = [
-        'public/views',
-        // 'public/views/login'
-    ];
+    $paths = $container['settings']['render']['paths'];
     $view = new \Slim\Views\Twig($paths, [
-        // 'cache' => 'src/cache'
+        // $container['settings']['render']['cache']
     ]);
 
     // Instantiate and add Slim specific extension
@@ -37,31 +34,41 @@ $container['view'] = function ($container) {
 };
 
 
+// monolog
+// $container['logger'] = function ($c) {
+//     $settings = $c->get('settings')['logger'];
+//     $logger = new \Monolog\Logger($settings['name']);
+//     $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
+//     $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
+//     return $logger;
+// };
+
+
 // ---------------------------
 // CONTROLLERS
 // ---------------------------
 
 /**
  * @param $container \Slim\Container
- * @return \App\Controllers\RequestController
+ * @return \Src\Controllers\RequestController
  */
 $container['RequestController'] = function($container){
-    return new App\Controllers\RequestController($container);
+    return new Src\Controllers\RequestController($container);
 };
 
 /**
  * @param $container \Slim\Container
- * @return \App\Controllers\UsersController
+ * @return \Src\Controllers\UsersController
  */
 $container['UsersController'] = function($container){
-    return new App\Controllers\UsersController($container);
+    return new Src\Controllers\UsersController($container);
 };
 
 // ---------------------------
 // SERVICES
 // ---------------------------
 $container['UsersService'] = function($container){
-    return new \App\Services\UsersService($container);
+    return new \Src\Services\UsersService($container);
 };
 
 // ---------------------------
@@ -73,13 +80,13 @@ $container['csrf'] = function($container) {
 };
 
 $container['Logger'] = function($container) {
-    return new \App\Classes\FlatLogger();
+    return new \Src\Classes\FlatLogger();
 };
 
 $container['HttpUtils'] = function($container) {
-    return new \App\Classes\HttpUtils();
+    return new \Src\Classes\HttpUtils();
 };
 
 $container['Files'] = function($container) {
-    return new \App\Classes\Files();
+    return new \Src\Classes\Files();
 };

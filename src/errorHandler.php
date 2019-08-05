@@ -1,6 +1,6 @@
 <?php
 
-use App\Classes\HttpUtils;
+use Src\Classes\HttpUtils;
 
 
 $container['errorHandler'] = function($container) {

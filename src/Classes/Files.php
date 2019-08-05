@@ -6,7 +6,7 @@
  * Time: 10:50 AM
  */
 
-namespace App\Classes;
+namespace Src\Classes;
 
 
 class Files

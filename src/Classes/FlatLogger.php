@@ -1,4 +1,4 @@
-<?php namespace App\Classes;
+<?php namespace Src\Classes;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
@@ -10,7 +10,7 @@ use Monolog\Logger;
  * @see https://github.com/Seldaek/monolog/blob/master/doc/02-handlers-formatters-processors.md
  * @see https://stackify.com/php-monolog-tutorial/
  *
- * @package App\includes
+ * @package Src\classes
  */
 class FlatLogger
 {

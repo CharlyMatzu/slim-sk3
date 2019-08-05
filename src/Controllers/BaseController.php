@@ -1,4 +1,4 @@
-<?php namespace App\Controllers;
+<?php namespace Src\Controllers;
 
 use Illuminate\Database\Query\Builder;
 use Psr\Log\LoggerInterface;

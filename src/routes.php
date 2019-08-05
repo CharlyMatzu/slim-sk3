@@ -4,6 +4,8 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Http\UploadedFile;
 
+
+
 $app->map(['GET', 'POST'], '/', function (Request $request, Response $response, $params = []) {
     return $response
         ->withStatus(200)
@@ -21,12 +23,6 @@ $app->post('/post', function (Request $request,  Response $response, $params = [
 
 $app->put('/put', function (Request $request,  Response $response, $params = []) {
     return $response->write('PUT EXAMPLE');
-});
-
-$app->any('/any', function (Request $request,  Response $response, $params = []) {
-    return $response
-        ->withStatus(200)
-        ->write('ANY EXAMPLE FOR ALL METHODS');
 });
 
 $app->map(['POST', 'PUT'], '/body', function (Request $request,  Response $response, $params = []){
@@ -98,10 +94,10 @@ $app->get('/redirect/example', function (Request $request,  Response $response, 
 });
 
 // Use a custom callback controller using invoke method
-$app->get('/call/invoke', new \App\Controllers\RequestController($container) );
+// $app->get('/call/invoke', new \Src\Controllers\RequestController);
 
 // Use a custom callback controller using invoke method
-$app->get('/call/class', \App\Controllers\RequestController::class . ':classExample' );
+$app->get('/call/class', \Src\Controllers\RequestController::class . ':classExample' );
 
 // Use a custom callback controller using an specific method
 // it need to be instanced on dependencies.php
@@ -124,23 +120,12 @@ $app->get('/midd/real', 'RequestController:checkExample')
 
 // ----------- USING TWIG RENDER
 
-$app->any('/view', function (Request $request,  Response $response, $params = []) {
+$app->get('/view', function (Request $request,  Response $response, $params = []) {
     return $this->view
         ->render($response, 'home.twig', [
             'TITLE' => 'TEST',
             'NAMES' => ['Carlos', 'Roberto', 'Zuniga', 'Martinez']
         ]);
-});
-
-
-
-// ----------- USING GROUPS
-
-$app->group('/group', function (\Slim\App $app) {
-
-    $app->any('/test', function (Request $request,  Response $response, $params = []) {
-        return $response->write("using groups");
-    });
 });
 
 
@@ -167,13 +152,33 @@ $app->post('/file', function(Request $request,  Response $response, $params = []
 
 
 // ------------------------------------------- 
-// DATABASE
+//  ELOQUENT DIRECT
 // ------------------------------------------- 
 
-$app->group('/users', function (Slim\App $app) {
-    $app->get('', 'UsersController:getUsers');
-    $app->get('/{name}', 'UsersController:getUsersByName');
-    $app->post('', 'UsersController:addUser');
-    $app->put('/{id}', 'UsersController:updateUser');
-    $app->delete('/{id}', 'UsersController:deleteUser');
+$app->group('/users', function($appG){
+    
+    $appG->get('/aa', function(Request $request, Response $response, $params = []){
+        $users = $this->container->db->table('users')->get();
+        return $response->withJson($users);
+    });
+
 });
+
+
+
+// ------------------------------------------- 
+//  ELOQUENT MODELS
+// ------------------------------------------- 
+
+// $app->group('/users', function (Slim\App $app) {
+//     $app->get('', 'UsersController:getUsers');
+//     $app->get('/{name}', 'UsersController:getUsersByName');
+//     $app->post('', 'UsersController:addUser');
+//     $app->put('/{id}', 'UsersController:updateUser');
+//     $app->delete('/{id}', 'UsersController:deleteUser');
+// });
+
+
+// ------------------------------------------- 
+//  JWT
+// ------------------------------------------- 

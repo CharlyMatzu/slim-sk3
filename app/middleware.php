@@ -1,13 +1,11 @@
 <?php
 
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 // --------- CORS
 
-$app->options('/{routes:.+}', function ($request, $response, $args) {
-    return $response;
-});
-
-$app->add(function ($req, $res, $next) {
+$app->add(function (Request $req, Response $res, Callable $next) {
     $response = $next($req, $res);
     return $response
         ->withHeader('Access-Control-Allow-Origin', '*')
@@ -19,5 +17,5 @@ $app->add(function ($req, $res, $next) {
 // --------- CUSTOM
 
 $container['RequestMiddleware'] = function($container){
-    return new Src\Middlewares\RequestMiddleware($container);
+    return new Src\Middleware\RequestMiddleware;
 };

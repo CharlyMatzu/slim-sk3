@@ -1,10 +1,11 @@
-<?php namespace Src\Middlewares;
+<?php namespace Src\Middleware;
 
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Src\Classes\HttpUtils;
 
 
-class RequestMiddleware extends BaseMiddleware
+class RequestMiddleware
 {
     /**
      * @param $request Request

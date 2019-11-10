@@ -1,43 +1,33 @@
 <?php namespace Src\Controllers;
 
-
+use Psr\Container\ContainerInterface;
+use Src\Classes\Base;
 use Src\Classes\HttpUtils;
 use Src\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class UsersController extends BaseController
+class UsersController extends Base
 {
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function getUsers($request,  $response, $params = []){
-        // $this->container
+    private $httpUtils;
+
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+        $this->httpUtils = $container->get('HttpUtils');
+    }
+
+    public function getUsers(Request $request, Response $response, $params = []){
         $users = User::get();
         return $response->write($users);
     }
 
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function getUsersByName($request,  $response, $params = []){
+    public function getUsersByName(Request $request, Response $response, $params = []){
         $users = User::where('firstName', $params['name'])->get();
         return $response->write($users);
     }
 
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function addUser($request,  $response, $params = []){
+    public function addUser(Request $request, Response $response, $params = []){
         try{
             $body = $request->getParsedBody();
             // TODO: validate email existance
@@ -46,19 +36,13 @@ class UsersController extends BaseController
                 'lastName' => $body['lastName'],
                 'email' => $body['email']
             ]);
-            return $this->container->HttpUtils->makeMessageResponse($response, HttpUtils::OK, "Register Success");
+            return $this->httpUtils->makeMessageResponse($response, HttpUtils::OK, "Register Success");
         }catch (\Exception $ex){
-            return $this->container->HttpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Error: ".$ex->getMessage());
+            return $this->httpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Error: ".$ex->getMessage());
         }
     }
 
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function updateUser($request,  $response, $params = []){
+    public function updateUser(Request $request, Response $response, $params = []){
         try{
             $body = $request->getParsedBody();
             $id = $params['id'];
@@ -69,27 +53,21 @@ class UsersController extends BaseController
                     'lastName' => $body['lastName'],
                     'email' => $body['email']
                 ]);
-            return $this->container->HttpUtils->makeMessageResponse($response, HttpUtils::OK, "Update Success");
+            return $this->httpUtils->makeMessageResponse($response, HttpUtils::OK, "Update Success");
         }catch (\Exception $ex){
-            return $this->container->HttpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Error: ".$ex->getMessage());
+            return $this->httpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Error: ".$ex->getMessage());
         }
     }
 
-    /**
-     * @param $request Request
-     * @param $response Response
-     * @param $params array
-     * @return Response
-     */
-    public function deleteUser($request,  $response, $params = []){
+    public function deleteUser(Request $request, Response $response, $params = []){
         try{
             $id = $params['id'];
             // TODO: validate user id existance
             $user = User::find($id);
             $user->delete();
-            return $this->container->HttpUtils->makeMessageResponse($response, HttpUtils::OK, "Delete Success");
+            return $this->httpUtils->makeMessageResponse($response, HttpUtils::OK, "Delete Success");
         }catch (\Exception $ex){
-            return $this->container->HttpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Error: ".$ex->getMessage());
+            return $this->httpUtils->makeMessageResponse($response, HttpUtils::INTERNAL_SERVER_ERROR, "Error: ".$ex->getMessage());
         }
     }
 }

@@ -1,40 +1,19 @@
-# Custom Slim Framework Skeleton for PHP Rest API Projects
-This project is a simple custom setup for PHP API Rest projects using slim framework 3. 
+# Proyecto Skeleton de Slim Framework 3 para API Rest en PHP 
+Este es un simple "setup" para comenzar rapidamente con proyectos. Incluye algunas algunas librerias con sus respectivos ejemplos funcionales. Este proyecto esta basado en algunas caracteriticas del skeleton oficial (v3): https://github.com/slimphp/Slim-Skeleton 
 
-* Easy Configuration
-* Examples with database connection and Singleton dummy data
-* Based on the original Slim Skeleton Project: https://github.com/slimphp/Slim-Skeleton
+* Facil configuración haciendo uso de un archivo .env (Environment)
+* Implementación de [Eloquent](https://laravel.com/docs/5.8/eloquent) con uso de modelos.
+* Log de errores
+* CORS
+* ErrorHandler
 
-### Root/ Directory
+## Estructura del proyecto
+#### Root
 
-* __Index.php:__ Slim App initialization, API files inclusion.
-* __Config.php:__ Contains some constants for storage directory PATHS. Can be used for more useful configuration like database connection, error reporting (slim handles this) and more.
-* __vendor/__ Composer dependencies (required). After download run __"composer install"__ command 
-* __app/__ All project files used for the API (back-end)
-* __public/__ All related with public files (html, js, css, media...)
-* __logs/__ Generated log by __FlatLogger__
-
-### App/ files
-* __dependencies:__ Controllers to load
-* __middleware:__ Middleware to load. Includes __CORS__ middleware
-* __routes:__ API Endpoints
-* __errorHandle:__ Custom responses for error handling.
-* __setting:__ Extra configuration of the framework, see: https://www.slimframework.com/docs/v3/objects/application.html#application-configuration
-* __autoload:__ optional autoloader for classes (currently composer autoloader is working in this project, see: __composer.json__, autoload section): __require_once "vendor/autoload.php"__ is used to include
-
-### App/ Directories
-All php files located in /App Directory separated depending of their functionality:
-
-* __Controller:__ Request and Response Handlers. Receive and return responses only and send information to services.
-* __Exceptions:__ Custom Exception classes. yeah...
-* __Routers:__ Separated routes.
-* __Middleware:__ Middleware logic.
-* __Models:__ Optional
-* __Service:__ Used by Controllers. Contains the business logic, data process, validations, etc.
-* __Persistence:__ Contains all queries to execute with database (DAO), get and set result sets. Data handle only.
-* __Utils:__ All Generic and useful classes.
-
-
-
-### Feedback
-Any advice is perfectly accepted, please, give me your feedback at carlosrozuma@gmail.com.
+* __app/__ Directorio que conforma los archivos requeridos por slim para funcionar así como su configuración de Rutas, middleware, controllers, etc.  
+* __extra/__ En este caso, sólo el query mysql del ejemplo.
+* __public/__ Contiene el archivo __index.php__ el cual hace la inclusión a todos los archivos requeridos, además es el directorio para aquellos elementos públicos correspondientes al front-end (embebido)
+* __src/__ Contiene todos aquellos elementos que se usaran en el proyecto. Clases, Modelos, Excepciones, Dao (Persistencia), etc.
+* __vendor/__ Dependencias de Composer (requiere __composer install__)
+ run __"composer install"__ 
+* __logs/__ directorio generado por el logger

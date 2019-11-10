@@ -1,8 +1,9 @@
 <?php namespace Src\Services;
 
+use Src\Classes\Base;
 use Src\Models\User;
 
-class UsersService extends BaseService
+class UsersService extends Base
 {
     public function getUsers(){
         return User::get();

@@ -45,7 +45,12 @@ return [
              'path'  => isset($_ENV['docker']) ? 'php://stdout' : LOG_PATH,
              'level' => \Monolog\Logger::DEBUG,
          ],
-        // Extra
+        'jwt' => [
+            'key' => getenv('JWT_KEY'),
+            'iss' => getenv('JWT_ISSUER'),
+            'expiration' => getenv('JWT_EXPIRATION')
+        ],
+        // Configuración adicional
         'app' => []
     ],
 ];

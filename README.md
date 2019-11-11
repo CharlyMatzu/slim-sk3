@@ -1,14 +1,14 @@
 # Proyecto Skeleton de Slim Framework 3 para API Rest en PHP 
 Este es un simple "setup" para comenzar rápidamente con proyectos. Incluye algunas algunas librerías con sus respectivos ejemplos funcionales. Este proyecto esta basado en algunas características del skeleton oficial (v3): https://github.com/slimphp/Slim-Skeleton 
 
-* Fácil configuración haciendo uso de un archivo `.env` (Environment)
+* Fácil configuración haciendo uso de un archivo `.env` (Environment).
 * Implementación de [Eloquent](https://laravel.com/docs/5.8/eloquent) `ORM` para manejo de base de datos.
-* `Monolog` para el registro de Log de errores
-* `Twig` Render para vistas
+* `Monolog` para el registro de Log de errores.
+* `Twig` Render para vistas.
 * `JWT` para la autenticación.
 * `CORS` para el control de acceso.
-* `CRSF` para seguridad.
-* Custom `ErrorHandlers`
+* `CRSF` para seguridad https://github.com/slimphp/Slim-Csrf.
+* Custom `ErrorHandlers`.
 
 ## Estructura del proyecto
 #### Root

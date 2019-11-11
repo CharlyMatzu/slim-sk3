@@ -20,15 +20,6 @@ $app->add(function (Request $req, Response $res, Callable $next) {
 //--------------------------------
 
 // --------- CSRF Protection Middleware
-// Se generan un nuevo token ya que de inicio este no lo tiene
-// generalmente se general al llamar '_invoke'
-//$guard = new Guard();
-//$guard->setPersistentTokenMode(true);
-//$guard->generateToken();
-
-// Register Middleware To Be Executed On All Routes
-//$app->add('CSRF');
-
 $container['CSRF'] = function(Container $container){
     $guard = new Slim\Csrf\Guard();
     $guard->setPersistentTokenMode(true);
@@ -47,14 +38,14 @@ $container['CSRF'] = function(Container $container){
     return $guard;
 };
 
-$container['JWT'] = function (Container $container){
-
-};
-
 //--------------------------------
 // CUSTOM
 //--------------------------------
 
-$container['RequestMiddleware'] = function($container){
+$container['RequestMiddleware'] = function(Container $container){
     return new Src\Middleware\RequestMiddleware;
+};
+
+$container['AuthMiddleware'] = function (Container $container){
+    return new Src\Middleware\AuthMiddleware($container->get('JWT'));
 };

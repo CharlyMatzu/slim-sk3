@@ -1,11 +1,14 @@
 # Proyecto Skeleton de Slim Framework 3 para API Rest en PHP 
-Este es un simple "setup" para comenzar rapidamente con proyectos. Incluye algunas algunas librerias con sus respectivos ejemplos funcionales. Este proyecto esta basado en algunas caracteriticas del skeleton oficial (v3): https://github.com/slimphp/Slim-Skeleton 
+Este es un simple "setup" para comenzar rápidamente con proyectos. Incluye algunas algunas librerías con sus respectivos ejemplos funcionales. Este proyecto esta basado en algunas características del skeleton oficial (v3): https://github.com/slimphp/Slim-Skeleton 
 
-* Facil configuración haciendo uso de un archivo .env (Environment)
-* Implementación de [Eloquent](https://laravel.com/docs/5.8/eloquent) con uso de modelos.
-* Log de errores
-* CORS
-* ErrorHandler
+* Fácil configuración haciendo uso de un archivo `.env` (Environment)
+* Implementación de [Eloquent](https://laravel.com/docs/5.8/eloquent) `ORM` para manejo de base de datos.
+* `Monolog` para el registro de Log de errores
+* `Twig` Render para vistas
+* `JWT` para la autenticación.
+* `CORS` para el control de acceso.
+* `CRSF` para seguridad.
+* Custom `ErrorHandlers`
 
 ## Estructura del proyecto
 #### Root
@@ -17,3 +20,9 @@ Este es un simple "setup" para comenzar rapidamente con proyectos. Incluye algun
 * __vendor/__ Dependencias de Composer (requiere __composer install__)
  run __"composer install"__ 
 * __logs/__ directorio generado por el logger
+
+El proyecto cuenta con un script de composer para iniciar en el directorio actual.
+```
+$ composer start
+```
+Esto inicia en el directorio `/public` por lo que el directorio principal sería éste en las vistas.

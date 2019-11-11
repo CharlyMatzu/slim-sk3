@@ -1,0 +1,11 @@
+{% extends "layouts/_base.twig"  %}
+
+{% block content %}
+    <p>El formulario debe ser de tipo 'hidden'</p>
+    {# Para uso de 'path_for' es necesario hacer uso de 'setName()' en la ruta correspondiente #}
+    <form action="{{ path_for('csrf-test') }}" method="post">
+        <input type="text" class="form-control" name="{{ key.name }}" value="{{ name }}">
+        <input type="text" class="form-control" name="{{ key.value }}" value="{{ value }}">
+        <input type="submit" class="btn btn-primary" value="Probar">
+    </form>
+{% endblock %}

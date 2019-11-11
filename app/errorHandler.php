@@ -2,7 +2,7 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Src\Classes\HttpUtils;
+use Src\Utils\HttpUtils;
 use \Slim\Container;
 
 
@@ -31,7 +31,7 @@ $container['notAllowedHandler'] = function (Container $container) {
 
 $container['phpErrorHandler'] = function (Container $container) {
     return function (Request $request, Response $response, $error) use ($container) {
-        $container->Logger->makeErrorLog('PHPErrorHandler: '.$error);
+        $container->Logger->AddError('PHPErrorHandler: '.$error);
         return $container->HttpUtils->makeMessageResponse( $response, HttpUtils::INTERNAL_SERVER_ERROR, 'Something went wrong' );
     };
 };

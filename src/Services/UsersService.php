@@ -1,6 +1,6 @@
 <?php namespace Src\Services;
 
-use Src\Classes\Base;
+use Src\Utils\Base;
 use Src\Models\User;
 
 class UsersService extends Base

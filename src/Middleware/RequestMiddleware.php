@@ -2,7 +2,7 @@
 
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Src\Classes\HttpUtils;
+use Src\Utils\HttpUtils;
 
 
 class RequestMiddleware

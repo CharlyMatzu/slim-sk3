@@ -1,4 +1,4 @@
-<?php namespace Src\Classes;
+<?php namespace Src\Utils;
 
 use Slim\Http\Response;
 
@@ -67,7 +67,7 @@ class HttpUtils
             ->withHeader( 'Content-Type', 'application/json' )
             ->withJson(
                 [
-                    'ResponseCode' => $statusCode,
+                    'Code' => $statusCode,
                     'Message' => $message
                 ]
             );
@@ -88,7 +88,7 @@ class HttpUtils
             ->withHeader( 'Content-Type', 'application/json' )
             ->withJson(
                 [
-                    'ResponseCode' => $statusCode,
+                    'Code' => $statusCode,
                     $json_key => $result
                 ]
             );

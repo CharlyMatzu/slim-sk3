@@ -1,6 +1,6 @@
 <?php namespace Src\Controllers;
 
-use Src\Classes\Base;
+use Src\Utils\Base;
 use Src\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;

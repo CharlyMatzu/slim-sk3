@@ -1,4 +1,4 @@
-<?php namespace Src\Classes;
+<?php namespace Src\Utils;
 
 use Slim\Http\UploadedFile;
 

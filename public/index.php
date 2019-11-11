@@ -1,17 +1,15 @@
 <?php
 
+session_start();
+
 // ----------- GLOBAL CONSTANTS
-//define('DS', DIRECTORY_SEPARATOR);
 define('ROOT_PATH', dirname(__DIR__) );
 define('SRC_PATH',  ROOT_PATH . '/src');
 define('APP_PATH',  ROOT_PATH . '/app');
 define('LOG_PATH',  ROOT_PATH . '/logs');
 
-
-
 // ----------- COMPOSER
 require_once ROOT_PATH . '/vendor/autoload.php';
-session_start();
 
 // ----------- SLIM FRAMEWORK
 $settings = require APP_PATH . '/settings.php';

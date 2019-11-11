@@ -1,8 +1,8 @@
 <?php namespace Src\Controllers;
 
 use Psr\Container\ContainerInterface;
-use Src\Classes\Base;
-use Src\Classes\HttpUtils;
+use Src\Utils\Base;
+use Src\Utils\HttpUtils;
 use Src\Models\User;
 use Slim\Http\Request;
 use Slim\Http\Response;

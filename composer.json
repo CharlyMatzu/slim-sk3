@@ -2,7 +2,7 @@
     "name": "charlyronin/slim-sk",
     "authors": [
         {
-            "name": "Carlos Zúñiga",
+            "name": "Carlos R. Zúñiga",
             "email": "carlosrozuma@gmail.com"
         }
     ],
@@ -30,6 +30,6 @@
         "sort-packages": true
     },
     "scripts": {
-        "start": "php -S localhost:8080 -t public"
+        "start": "php -S localhost:8090 -t public"
     }
 }

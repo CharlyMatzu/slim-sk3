@@ -105,7 +105,7 @@ $app->get('/call/method', 'BasicController:methodExample');
 // See more: http://www.slimframework.com/docs/v3/concepts/middleware.html
 
 $app->get('/midd', function (Request $request, Response $response, $args = []) {
-    return $response->write("MIDDLEWARE");
+    return $response->write("MIDDLEWARE EXAMPLE");
 })->add('RequestMiddleware:testMiddleware');
 
 

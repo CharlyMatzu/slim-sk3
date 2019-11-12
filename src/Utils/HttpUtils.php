@@ -5,7 +5,7 @@ use \Slim\Container;
 
 
 
-class HttpUtils extends Base
+class HttpUtils
 {
     const OK = 200;
     const CREATED = 201;

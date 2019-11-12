@@ -81,7 +81,7 @@ $container['CsrfExtension'] = function(Container $container) {
 
 $container['JWT'] = function (Container $container){
     $jwt = $container->get('settings')['jwt'];
-    return new \Src\Utils\JwtManager($jwt['key'], $jwt['iss'], $jwt['exp']);
+    return new \Src\Utils\JwtManager($jwt['key'], $jwt['iss'], (int)$jwt['expiration']);
 };
 
 

@@ -11,6 +11,9 @@ define('LOG_PATH',  ROOT_PATH . '/logs');
 // ----------- COMPOSER
 require_once ROOT_PATH . '/vendor/autoload.php';
 
+// new \Slim\Utils\HttpUtils;
+// exit;
+
 // ----------- SLIM FRAMEWORK
 $settings = require APP_PATH . '/settings.php';
 $app = new \Slim\App( $settings );

@@ -41,21 +41,16 @@ $app->group('/csrf', function (App $app) use ($container){
 
 });
 
-// $app->get('/token', function(Request $req, Response $res, $args){
-//     return $res->write('token');
-// });
-
-// $app->group('/jwt', function(App $app) use ($container){
+$app->group('/jwt', function(App $app) use ($container){
     
-//     $app->get('/token', function(Request $req, Response $res, $args){
-//         return $res->write('token');
-//     });
+    $app->get('', function(Request $req, Response $res, $args) use ($container){
+        $token = $container->get('JWT')->encodeToken("hello jwt");
+        return $container->View->render($res, 'jwt.twig', [
+            'token' => $token
+        ]);
+    });
 
-//     $app->get('/protected', function(Request $req, Response $res, $args){
-//         return $res->write(json_encode($args));
-//     });
-
-//     // $app->post('/protected', function(Request $req, Response $res, $args){
-        
-//     // });
-// });
+    $app->get('/protected', function(Request $req, Response $res, $args){
+        //return $res->write(json_encode($args));
+    })->setName('jwt-test')->add('AuthMiddleware');
+});

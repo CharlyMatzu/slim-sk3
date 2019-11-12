@@ -21,10 +21,20 @@ class AuthMiddleware
         $token = str_replace('Bearer ', '', $authorization);
         if (empty($token)) return $next($req, $res);
 
-        $user = $this->jwtManager->decodeToken($token)->payload;
+        $payload = $this->jwtManager->decodeToken($token);
         if (empty($user)) return $next($req, $res);
 
-        $req = $req->withAttribute('user', $user);
+        $req = $req->withAttribute('payload', $payload);
         return $next($req, $res);
     }
+
+    public function tokenParam(Request $req,  Response $res, $next) {
+        $req->
+
+        $payload = $this->jwtManager->decodeToken($token);
+        if (empty($user)) return $next($req, $res);
+
+        $req = $req->withAttribute('payload', $payload);
+        return $next($req, $res);
+     }
 }

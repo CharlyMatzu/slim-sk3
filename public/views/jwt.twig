@@ -1,0 +1,9 @@
+{% extends "layouts/_base.twig"  %}
+
+{% block content %}
+    {# Para uso de 'path_for' es necesario hacer uso de 'setName()' en la ruta correspondiente #}
+    <form action="{{ path_for('jwt-test') }}" method="post">
+        <input type="text" class="form-control" name="token" value="{{ token }}">
+        <input type="submit" class="btn btn-primary" value="Probar">
+    </form>
+{% endblock %}

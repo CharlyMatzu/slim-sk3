@@ -19,11 +19,11 @@ $container = $app->getContainer();
 // Set up Dependencies
 require APP_PATH . '/dependencies.php';
 
-// Register middleware
-require APP_PATH . '/middleware.php';
-
 // Error Handler
 require APP_PATH . '/errorHandler.php';
+
+// Register middleware
+require APP_PATH . '/middleware.php';
 
 // Register routes
 require APP_PATH . '/router.php';

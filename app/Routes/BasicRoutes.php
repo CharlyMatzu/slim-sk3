@@ -4,30 +4,26 @@ use Slim\App;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-$app->options('/{routes:.+}', function (Request $request, Response $response, $args) {
-    return $response;
-});
-
-$app->map(['GET', 'POST'], '/', function (Request $request, Response $response, $params = []) {
+$app->map(['GET', 'POST'], '/', function (Request $request, Response $response, $args = []) {
     return $response
         ->withStatus(200)
         ->write('HELLO WORLD USING MAP ROUTE EXAMPLE');
 });
 
 // Simple New Route Function Signature
-$app->get('/get', function (Request $request,  Response $response, $params = []) {
+$app->get('/get', function (Request $request,  Response $response, $args = []) {
     return $response->write('GET EXAMPLE');
 });
 
-$app->post('/post', function (Request $request,  Response $response, $params = []) {
+$app->post('/post', function (Request $request,  Response $response, $args = []) {
     return $response->write('POST EXAMPLE');
 });
 
-$app->put('/put', function (Request $request,  Response $response, $params = []) {
+$app->put('/put', function (Request $request,  Response $response, $args = []) {
     return $response->write('PUT EXAMPLE');
 });
 
-$app->map(['POST', 'PUT'], '/body', function (Request $request,  Response $response, $params = []){
+$app->map(['POST', 'PUT'], '/body', function (Request $request,  Response $response, $args = []){
     $body = $request->getParsedBody();
     return $response
         ->withStatus(200)
@@ -36,7 +32,7 @@ $app->map(['POST', 'PUT'], '/body', function (Request $request,  Response $respo
 
 
 // Simple New Route Function Signature
-$app->get('/info[/]', function (Request $request,  Response $response, $params = []) {
+$app->get('/info[/]', function (Request $request,  Response $response, $args = []) {
     //GET EXTRA INFORMATION
     $route = $request->getAttribute('route');
 
@@ -54,14 +50,14 @@ $app->get('/info[/]', function (Request $request,  Response $response, $params =
 })->setName("info route name"); //name for identification
 
 // using URL param
-$app->get('/hello/{name}', function( Request $request, Response $response, $params = [] ){
+$app->get('/hello/{name}', function( Request $request, Response $response, $args = [] ){
     return $response
         ->withStatus(200)
-        ->write("HELLO ". $params['name']);
+        ->write("HELLO ". $args['name']);
 });
 
 // using headers
-$app->get('/headers/request', function (Request $request,  Response $response, $params = []) {
+$app->get('/headers/request', function (Request $request,  Response $response, $args = []) {
     $headers = $request->getHeaders();
     return $response
         ->withStatus(200)
@@ -69,7 +65,7 @@ $app->get('/headers/request', function (Request $request,  Response $response, $
 
 });
 
-$app->get('/headers/response', function (Request $request,  Response $response, $params = []) {
+$app->get('/headers/response', function (Request $request,  Response $response, $args = []) {
     return $response
         ->withStatus(200)
         ->withHeader('Authorization', 'value')
@@ -81,14 +77,14 @@ $app->get('/headers/response', function (Request $request,  Response $response, 
 $app->redirect('/redirect[/]', 'redirect/example');
 
 // Redirect using response argument
-$app->get('/redirect/v2[/]', function (Request $request,  Response $response, $params = []) {
+$app->get('/redirect/v2[/]', function (Request $request,  Response $response, $args = []) {
     return $response
         ->withRedirect('redirect/example', 301);
 
 });
 
 // redirected response
-$app->get('/redirect/example', function (Request $request,  Response $response, $params = []) {
+$app->get('/redirect/example', function (Request $request,  Response $response, $args = []) {
     return $response
         ->withStatus( 200 )
         ->write("Redirected");
@@ -108,7 +104,7 @@ $app->get('/call/method', 'BasicController:methodExample');
 //------------ Middleware examples
 // See more: http://www.slimframework.com/docs/v3/concepts/middleware.html
 
-$app->get('/midd', function (Request $request, Response $response, $params = []) {
+$app->get('/midd', function (Request $request, Response $response, $args = []) {
     return $response->write("MIDDLEWARE");
 })->add('RequestMiddleware:testMiddleware');
 
@@ -120,7 +116,7 @@ $app->get('/midd/real', 'BasicController:checkExample')
 
 // ----------- FILE UPLOAD
 // NOTE: required multipart/form-data
-$app->post('/file', function(Request $request,  Response $response, $params = []) use ($container){
+$app->post('/file', function(Request $request,  Response $response, $args = []) use ($container){
     //$directory = $this->get('upload_directory'); // settings.php
     $directory = ROOT_PATH . DS . 'public' . DS . 'uploads';
     if (!file_exists($directory)) mkdir( $directory, 0777, true);

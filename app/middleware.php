@@ -5,7 +5,13 @@ use Slim\Csrf\Guard;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-// --------- CORS
+
+
+//--------------------------------
+// Security
+//--------------------------------
+
+// --------- CORS (global)
 
 $app->add(function (Request $req, Response $res, Callable $next) {
     $response = $next($req, $res);
@@ -14,10 +20,6 @@ $app->add(function (Request $req, Response $res, Callable $next) {
         ->withHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content-Type, Accept, Origin, Authorization')
         ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
 });
-
-//--------------------------------
-// Security
-//--------------------------------
 
 // --------- CSRF Protection Middleware
 $container['CSRF'] = function(Container $container){

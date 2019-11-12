@@ -41,7 +41,7 @@ return [
         ],
         // Monolog settings
          'logger' => [
-             'name'  => 'slim-sk3',
+             'name'  => getenv('APPLICATION_NAME'),
              'path'  => isset($_ENV['docker']) ? 'php://stdout' : LOG_PATH,
              'level' => \Monolog\Logger::DEBUG,
          ],

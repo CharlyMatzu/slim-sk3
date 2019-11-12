@@ -36,14 +36,13 @@ class JwtManager
     public function decodeToken(string $token)
     {
         try{
-            if( empty($token) || $token === null || $token === "null" ){
-//                throw new TokenException("Token invalido");
+            if( empty($token) || $token === null || $token === "null" )
                 return null;
-            }
-
+            
+            
             return JWT::decode($token, $this->key,  array($this::ALG));
+
         }catch (UnexpectedValueException $ex){
-//            throw new TokenException( $ex->getMessage() );
             return null;
         }
     }
